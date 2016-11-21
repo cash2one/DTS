@@ -1,0 +1,63 @@
+{% extends 'include/base.html' %}
+
+{% block content %}
+<style type="text/css">
+textarea{ 
+  width: 400px; 
+  height:80px; 
+}
+</style>
+
+<div class="container">
+<form class="form-horizontal" enctype="multipart/form-data"  method="post">
+    {% csrf_token %}
+    <fieldset>
+      <div id="legend" class="">
+        <legend class="">表单名</legend>
+      </div>
+    <div class="control-group">
+
+          <!-- Textarea -->
+          <label class="control-label">文件描述</label>
+          <div class="controls">
+            <div class="textarea">
+                  <textarea type="" class="" maxlength="300" name='file_desc'> </textarea>
+            </div>
+          </div>
+        </div>
+    <div class="control-group">
+
+          <!-- Select Basic -->
+          <label class="control-label">选择第三方来源</label>
+          <div class="controls">
+            <select class="input-xlarge" name='file_from'>
+                {% for key, value in companys %}
+                <option value="{{key}}">{{value}}</option>
+                {% endfor %}
+            </select>
+          </div>
+
+        </div>
+    <div class="control-group">
+          <label class="control-label">选择文件</label>
+
+          <!-- File Upload -->
+          <div class="controls">
+            <input class="input-file" id="fileInput" type="file" name='file'>
+            <p class="help-block"><font color="#6F00D2">只允许上传txt文件<br>文件编码必须为utf8格式</font></p>
+          </div>
+        </div>
+    <div class="control-group">
+          <label class="control-label"></label>
+
+          <!-- Button -->
+          <div class="controls">
+            <button type="submit" class="btn btn-primary">提交</button>
+            <p>{{err}}</p>
+          </div>
+        </div>
+
+    </fieldset>
+  </form>
+</div>
+{% endblock %}

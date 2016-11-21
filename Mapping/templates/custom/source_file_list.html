@@ -1,0 +1,135 @@
+{% extends 'include/base.html' %}
+
+{% block content %}
+<style type="text/css">
+/*.table{
+	width: 80%;	
+	margin: 0 auto;
+	margin-top: 40px;
+}
+.pager{
+	margin-right: 10%;
+    margin-top: 20px;
+}
+.table td a{
+	color:black;	
+}*/
+.footer{
+	font-size: 18px;
+	text-align: center;
+	width: 100%;
+    margin-top:100px;
+}
+</style>
+
+        <table class="table" style="width:80%; margin-left:10%;">
+            <thead><tr><th>文件名称</th><th>备注</th><th>行数</th><th>上传时间</th><th>操作</th></tr></thead>
+            <tbody>
+                {% for file in page %}
+                    {%if forloop.counter|divisibleby:2 %}
+                        <tr id="file_{{file.id}}" style="background-color:#f9f9f9;" onMouseOver="this.style.backgroundColor='#BFDCF3';" onmouseout="this.style.backgroundColor='#f9f9f9';">
+                    {%else%}
+                        <tr id="file_{{file.id}}">
+                    {%endif%}
+
+                    <td style="display:none">{{file.id}}</td>
+                    <td><a href="/downloads/1/{{file.id}}/"> {{file}}</a></td>
+                    <td>{{file.extra_info}}</td>
+                    <td>{{file.total_lines|default_if_none:'---'}}</td>
+                    <td>{{file.create_time|date:"SHORT_DATE_FORMAT"}}</td>
+                    <td>
+                        <a href="/als/custom/mappinged_files/?fileid={{file.id}}"><button class="btn btn-primary">匹配结果</button></a>
+                        <a href="/als/custom/report_files/?fileid={{file.id}}"><button class="btn btn-success">查看报告</button></a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <ul class="pager" style="float:right; margin-right:10%;">
+
+                {% if page.has_previous %}
+                    <li><a href="/als/custom/source_files/">首页</a></li>
+                    <li><a href="/als/custom/source_files/?page={{ page.previous_page_number }}">前一页</a></li>
+                {% else %}
+                    <li><a href="#">首页</a></li>
+                    <li><a href="#">前一页</a></li>
+                {% endif %}
+                <li><a href="#">第{{page.number}}/{{page.paginator.num_pages}}页   共{{ page.paginator.num_pages}}页</a></li>
+                {% if page.has_next %}
+                    <li><a href="/als/custom/source_files/?page={{ page.next_page_number }}">后一页</a></li>
+                    <li><a href="/als/custom/source_files/?page={{ page.paginator.num_pages }}">末页</a></li>
+                {% else %}
+                    <li><a href="#">后一页</a></li>
+                    <li><a href="#">末页</a></li>
+                {% endif %}
+                    <li><input style="width:50px;margin-bottom:0px;" type="text" id="pageNum" name="pageNum"></li>
+                    <li onclick="window.location.href='/als/custom/source_files/?page='+document.getElementById('pageNum').value;"><a href="#">确定</a></li>
+                    <li><a href="#">第{{page.number}}/{{page.paginator.num_pages}}页   共{{ page.paginator.num_pages}}页</a></li>
+            </ul>
+<!-- </div> -->
+
+
+
+
+
+
+
+
+<!-- <div class="container" style="background: #FFFFFF;width: 85%;border-radius: 10px;margin-top: 30px;min-height: 550px;">
+        <div class="container-fluid">
+
+            <table class="table table-hover">
+                <thead><tr><th>文件名称</th><th>备注</th><th>行数</th><th>上传时间</th><th>操作</th></tr></thead>
+                <tbody>
+                    {% for file in page %}
+                        {%if forloop.counter|divisibleby:2 %}
+                            <tr id="file_{{file.id}}" style="background-color:#f9f9f9;" onMouseOver="this.style.backgroundColor='#BFDCF3';" onmouseout="this.style.backgroundColor='#f9f9f9';">
+                        {%else%}
+                            <tr id="file_{{file.id}}">
+                        {%endif%}
+
+                        <td style="display:none">{{file.id}}</td>
+                        <td><a href="/downloads/1/{{file.id}}/"> {{file}}</a></td>
+                        <td>{{file.extra_info}}</td>
+                        <td>{{file.total_lines|default_if_none:'---'}}</td>
+                        <td>{{file.create_time|date:"SHORT_DATE_FORMAT"}}</td>
+                        <td>
+                            <a href="/als/custom/mappinged_files/?fileid={{file.id}}"><button class="btn btn-success">匹配结果</button></a>
+                            <a href="/als/custom/report_files/?fileid={{file.id}}"><button class="btn btn-success">查看报告</button></a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <ul class="pager" style="float: right">
+
+                {% if page.has_previous %}
+                    <li><a href="/als/custom/source_files/">首页</a></li>
+                    <li><a href="/als/custom/source_files/?page={{ page.previous_page_number }}">前一页</a></li>
+                {% else %}
+                    <li><a href="#">首页</a></li>
+                    <li><a href="#">前一页</a></li>
+                {% endif %}
+
+                {% if page.has_next %}
+                    <li><a href="/als/custom/source_files/?page={{ page.next_page_number }}">后一页</a></li>
+                    <li><a href="/als/custom/source_files/?page={{ page.paginator.num_pages }}">末页</a></li>
+                {% else %}
+                    <li><a href="#">后一页</a></li>
+                    <li><a href="#">末页</a></li>
+                {% endif %}
+                    <li><input style="width:50px;margin-bottom:0px;" type="text" id="pageNum" name="pageNum"></li>
+                    <li onclick="window.location.href='/als/custom/source_files/?page='+document.getElementById('pageNum').value;"><a href="#">确定</a></li>
+                    <li><a href="#">第{{page.number}}/{{page.paginator.num_pages}}页   共{{ page.paginator.num_pages}}页</a></li>
+            </ul>
+</div>
+</div> -->
+{% endblock %}
+
+{% block js %}
+<script src="/static/js/file_custom.js"></script>
+<!-- <div class="footer">
+        Copyright © 2015百融（北京）金融信息服务股份有限公司.All Right Reserved.
+    </div> -->
+{% endblock %}

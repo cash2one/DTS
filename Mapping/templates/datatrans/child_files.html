@@ -1,0 +1,29 @@
+{% extends 'include/base.html' %}
+
+{% block content %}
+<div class="container">
+        <div class="container-fluid">
+
+            <table class="table table-hover">
+                <thead><tr><th>文件名称</th><th>文件大小</th><th>生成时间</th><th>操作</th></tr></thead>
+                <tbody>
+                    {% for file in page %}
+                        {%if forloop.counter|divisibleby:2 %}
+                            <tr id="file_{{file.id}}" style="background-color:#f9f9f9;" onMouseOver="this.style.backgroundColor='#BFDCF3';" onmouseout="this.style.backgroundColor='#f9f9f9';">
+                        {%else%}
+                            <tr id="file_{{file.id}}">
+                        {%endif%}
+
+                        <td style="display:none">{{file.id}}</td>
+                        <td><a href="/downloads/3/{{file.id}}/"> {{file.get_base_name}}</a></td>
+                        <td>{{file.file_size|filesizeformat}}</td>
+                        <td>{{file.create_time|date:"SHORT_DATE_FORMAT"}}</td>
+                        <td>
+                            <a href="/als/datatrans/del_child/?parentid={{parentid}}&fileid={{file.id}}"><button class="btn btn-success" >删除</button></a>
+                        <td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+</div>
+{% endblock %}

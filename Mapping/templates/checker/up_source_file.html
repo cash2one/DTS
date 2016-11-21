@@ -1,0 +1,104 @@
+{% extends 'include/base.html' %}
+
+{% block content %}
+<style type="text/css">
+textarea{ 
+  width: 400px; 
+  height:80px; 
+}
+
+p {
+color:red;
+}
+
+</style>
+<div class="container">
+<form class="form-horizontal" enctype="multipart/form-data" method="post">
+    {% csrf_token %}
+    <fieldset>
+      <div id="legend" class="">
+        <legend class="">文件上传</legend>
+      </div>
+    
+    <div class="control-group">
+          <!-- Select Basic -->
+          <label class="control-label">选择客户</label>
+          <div class="controls">
+            <select class="input-xlarge" name="cus_id">
+                {% for custom in customs %}
+                <option value="{{custom.id}}">{{custom.name}}</option>
+                {% endfor %}
+            </select>
+          </div>
+    </div>
+
+
+    <div class="control-group">
+          <label class="control-label">选择文件</label>
+
+          <!-- File Upload -->
+          <div class="controls">
+            <input class="input-file" id="fileInput" type="file" name="file">
+            <p class="help-block"><font color="#6F00D2">只允许上传txt文件<br> 且文件上述不得超过40万行<br>文件编码必须为utf8格式</font></p>
+          </div>
+    </div>
+
+    <div class="control-group">
+          <!-- Select Basic -->
+          <label class="control-label">选择客户群</label>
+          <div class="controls">
+            <select class="input-xlarge" name="file_source_type">
+                {% for value, name in file_source_type %}
+                <option value="{{value}}">{{name}}</option>
+                {% endfor %}
+            </select>
+          </div>
+    </div>
+
+    <div class="control-group">
+          <!-- Select Basic -->
+          <label class="control-label">选择担保类型</label>
+          <div class="controls">
+            <select class="input-xlarge" name="file_source_type">
+                {% for value, name in gurantee_type %}
+                <option value="{{value}}">{{name}}</option>
+                {% endfor %}
+            </select>
+          </div>
+    </div>
+
+    <div class="control-group">
+          <!-- Select Basic -->
+          <label class="control-label">用户对象</label>
+          <div class="controls">
+            <select class="input-xlarge" name="file_source_type">
+                {% for value, name in gurantee_type %}
+                <option value="{{value}}">{{name}}</option>
+                {% endfor %}
+            </select>
+          </div>
+    </div>
+
+    <div class="control-group">
+
+          <!-- Textarea -->
+          <label class="control-label">备注</label>
+          <div class="controls">
+            <div class="textarea">
+                  <textarea type="" class="" name="extra_info" maxlength="300"> </textarea>
+            </div>
+          </div>
+        </div><div class="control-group">
+
+        <span><font color="red">{{ err|safe }}</font></span>
+          <!-- Button -->
+          <div class="controls">
+            <button type="submit" class="btn btn-success">提交</button>
+          </div>
+        </div>
+
+    </fieldset>
+  </form>
+
+</div>
+{% endblock %}

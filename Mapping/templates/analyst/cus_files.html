@@ -1,0 +1,573 @@
+{% extends 'include/base.html' %}
+{% load show_utils %}
+
+{% block content %}
+<style type="text/css">
+.table{
+	width: 100%;	
+	margin: 0 auto;
+	margin-top: 20px;	
+}
+
+.pager{
+	margin-right: 0%;
+}
+.table td a{
+	color:black;	
+	
+}
+.input-xlarge{
+    width: 200px;
+    height: 25px;
+    }
+.query_table{
+    padding-left: 15%;
+    padding-top: 40px;
+}
+.query_td{
+    text-align: center;
+    width: 5%;
+}
+.footer{
+	font-size: 18px;
+	text-align: center;
+	width: 100%;
+    margin-top: 80px;
+/*	position: absolute;
+    bottom: 20px;*/
+}
+
+</style>
+
+<div class="panel panel-default" style="width:80%; margin-left:10%; ">
+  <div class="panel-heading">
+    <h3 class="panel-title">当前Apicode:{{apicode}}</h3>
+  </div>
+  <div class="panel-body">
+    <form action="/als/analyst/cus_files/" method="get">
+    <table>
+    <tr>
+        <td class="query_td">
+            <select class="form-control" name="cus_id">
+            <option value="ALL">选择客户名称</option>
+            {% for custom in customs %}
+                {% if custom.id == query_custom_id %}
+                    <option value="{{custom.id}}" selected = "selected">{{custom.name}}</option>
+                {% else %}
+                    <option value="{{custom.id}}">{{custom.name}}</option>
+                {% endif %}
+            {% endfor %}
+            </select>
+        </td>
+        <td class="query_td"><label for="time1" style="margin-right:0px;">上传时间：</label></td>
+        <td class="query_td"><input type="text" class="form-control" id="datepicker" name="time1" value="{{time1}}" /></td>
+        <td class="query_td">-------------------</td>
+        <td class="query_td"><input type="text" class="form-control"  id="datepicker2" name="time2" value="{{time2}}" /></td>
+        <td class="query_td"> <label for="file_name">文件名：<label></td>
+        <td class="query_td"><input type="text"  class="form-control"  id="file_name" name="file_name" value="{{file_name}}"/></td>
+        <td class="query_td"><button type="submit" class="btn btn-primary">提交</button></td>
+    </tr>
+    </table>
+    </form>
+  </div>
+</div>
+            <table class="table table-hover" style="width:80%; margin-right:10%;">
+                <thead><tr><th>文件名称</th><th>行数</th><th>备注</th><th>字段</th><th>上传时间</th><th>操作</th></tr></thead>
+                <tbody>
+                    {% for file in page %}
+                        {% if forloop.counter|divisibleby:2 %}
+                            <tr id="file_{{file.id}}" style="background-color:#f9f9f9;" onMouseOver="this.style.backgroundColor='#BFDCF3';" onmouseout="this.style.backgroundColor='#f9f9f9';">
+                        {% else %}
+                            <tr id="file_{{file.id}}">
+                        {% endif %}
+
+                        <td style="display:none">{{file.id}}</td>
+                        <td>{{file}}</td>
+                        <td>{{file.total_lines|default_if_none:'---'}}</td>
+                        <td>{{file.extra_info}}</td>
+                        <td>{{file.fields|break_line:65}}</td>
+                        <td>{{file.create_time|date:"SHORT_DATE_FORMAT"}}</td>
+                        <td class="obj">
+                        {% if file.fields %}
+                            <button class="btn btn-primary" onclick="show_confirm(this);" value="{{file.id}}">进行匹配</button>
+                        {% else %}
+                            <button class="btn btn-primary" disabled="disabled" onclick="show_confirm(this);" value="{{file.id}}">进行匹配</button>
+                        {% endif %}
+                        <a href='/als/analyst/cus_mappinged_files/?fileid={{file.id}}'><button class="btn btn-success">匹配结果</button></a>
+                        <a href='/als/analyst/up_report/?fileid={{file.id}}'><button class="btn btn-info">上传报告</button></a>
+                        <a href='/als/analyst/cus_report_files/?fileid={{file.id}}'><button class="btn btn-warning">查看报告</button></a>
+                        {% if file.fields and file.user_type and not file.is_sampling %}
+                            <button class="btn btn-primary" onclick="collect_date({{file.id}})">数据集市</button>
+                        {% else %}
+                            <button class="btn btn-primary" disabled='disabled' >数据集市</button>
+                        {%endif%}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <ul class="pager" style="float: right; margin-right:10%;">
+
+                <li><a href="/als/analyst/cus_files/?cus_id={{query_custom_id}}&cus_id={{query_custom_id}}&time1={{time1}}&time2={{time2}}&file_name={{file_name}}">首页</a></li>
+                {% if page.has_previous %}
+                    <li><a href="/als/analyst/cus_files/?page={{ page.previous_page_number }}&cus_id={{query_custom_id}}&time1={{time1}}&time2={{time2}}&file_name={{file_name}}">前一页</a></li>
+                {% else %}
+                    <li><a href="#">前一页</a></li>
+                {% endif %}
+                <li><a href="#">第{{page.number}}/{{page.paginator.num_pages}}页   共{{ page.paginator.num_pages}}页</a></li>
+                {% if page.has_next %}
+                    <li><a href="/als/analyst/cus_files/?page={{ page.next_page_number }}&cus_id={{query_custom_id}}&time1={{time1}}&time2={{time2}}&file_name={{file_name}}">后一页</a></li>
+                {% else %}
+                    <li><a href="#">后一页</a></li>
+                {% endif %}
+                <li><a href="/als/analyst/cus_files/?page={{ page.paginator.num_pages }}&cus_id={{query_custom_id}}&time1={{time1}}&time2={{time2}}&file_name={{file_name}}">末页</a></li>
+
+                <li><input  style="width:50px;margin-bottom:0px;" type="text" id="pageNum" name="pageNum"></li>
+                <li ><a href="#" onclick="window.location.href='/als/analyst/cus_files/?page='+document.getElementById('pageNum').value;&cus_id={{query_custom_id}}&time1={{time1}}&time2={{time2}}&file_name={{file_name}}">确定</a></li>
+                <li><a href="#">第{{page.number}}/{{page.paginator.num_pages}}页   共{{ page.paginator.num_pages }}页</a></li>
+            </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <div class="container" style="background: #FFFFFF;width: 80%;border-radius: 10px;margin-top: 30px;overflow: hidden;min-height: 550px;" >
+            <table class="query_table">
+             <form action="/als/analyst/cus_files/" method="get">
+                <tr>
+                    <td class="query_td">客户名称：
+                            <select class="input-xlarge" name="cus_id">
+                            <option value="ALL">请选择</option>
+                            {% for custom in customs %}
+                                {% if custom.id == query_custom_id %}
+                                    <option value="{{custom.id}}" selected = "selected">{{custom.name}}</option>
+                                {% else %}
+                                    <option value="{{custom.id}}">{{custom.name}}</option>
+                                {% endif %}
+                            {% endfor %}
+                            </select>
+                    </td>
+                    <td class="query_td">上传时间：<input type="text" id="datepicker" name="time1" value="{{time1}}" />---<input type="text" id="datepicker2" name="time2" value="{{time2}}" /></td>
+                    <td class="query_td"> 文件名：<input type="text" id="file_name" name="file_name" value="{{file_name}}"/></td>
+                    <td class="query_td"><button type="submit" class="btn btn-success">提交</button></td>
+                </tr>
+                </form>
+            </table>
+            <table class="table table-hover">
+                <thead><tr><th>文件名称</th><th>行数</th><th>备注</th><th>字段</th><th>上传时间</th><th>操作</th></tr></thead>
+                <tbody>
+                    {% for file in page %}
+                        {% if forloop.counter|divisibleby:2 %}
+                            <tr id="file_{{file.id}}" style="background-color:#f9f9f9;" onMouseOver="this.style.backgroundColor='#BFDCF3';" onmouseout="this.style.backgroundColor='#f9f9f9';">
+                        {% else %}
+                            <tr id="file_{{file.id}}">
+                        {% endif %}
+
+                        <td style="display:none">{{file.id}}</td>
+                        <td>{{file}}</td>
+                        <td>{{file.total_lines|default_if_none:'---'}}</td>
+                        <td>{{file.extra_info}}</td>
+                        <td>{{file.fields|break_line:65}}</td>
+                        <td>{{file.create_time|date:"SHORT_DATE_FORMAT"}}</td>
+                        <td class="obj">
+                        {% if file.fields %}
+                            <button class="btn btn-primary" onclick="show_confirm(this);" value="{{file.id}}">进行匹配</button>
+                        {% else %}
+                            <button class="btn btn-primary" disabled="disabled" onclick="show_confirm(this);" value="{{file.id}}">进行匹配</button>
+                        {% endif %}
+                        <a href='/als/analyst/cus_mappinged_files/?fileid={{file.id}}'><button class="btn btn-success">匹配结果</button></a>
+                        <a href='/als/analyst/up_report/?fileid={{file.id}}'><button class="btn btn-primary">上传报告</button></a>
+                        <a href='/als/analyst/cus_report_files/?fileid={{file.id}}'><button class="btn btn-success">查看报告</button></a>
+                        {% if file.fields and file.user_type and not file.is_sampling %}
+                            <button class="btn btn-primary" onclick="collect_date({{file.id}})">数据集市</button>
+                        {% else %}
+                            <button class="btn btn-primary" disabled='disabled' >数据集市</button>
+                        {%endif%}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <ul class="pager" style="float: right">
+
+                <li><a href="/als/analyst/cus_files/?cus_id={{query_custom_id}}&cus_id={{query_custom_id}}&time1={{time1}}&time2={{time2}}&file_name={{file_name}}">首页</a></li>
+                {% if page.has_previous %}
+                    <li><a href="/als/analyst/cus_files/?page={{ page.previous_page_number }}&cus_id={{query_custom_id}}&time1={{time1}}&time2={{time2}}&file_name={{file_name}}">前一页</a></li>
+                {% else %}
+                    <li><a href="#">前一页</a></li>
+                {% endif %}
+
+                {% if page.has_next %}
+                    <li><a href="/als/analyst/cus_files/?page={{ page.next_page_number }}&cus_id={{query_custom_id}}&time1={{time1}}&time2={{time2}}&file_name={{file_name}}">后一页</a></li>
+                {% else %}
+                    <li><a href="#">后一页</a></li>
+                {% endif %}
+                <li><a href="/als/analyst/cus_files/?page={{ page.paginator.num_pages }}&cus_id={{query_custom_id}}&time1={{time1}}&time2={{time2}}&file_name={{file_name}}">末页</a></li>
+
+                <li><input  style="width:50px;margin-bottom:0px;" type="text" id="pageNum" name="pageNum"></li>
+                <li onclick="window.location.href='/als/analyst/cus_files/?page='+document.getElementById('pageNum').value;&cus_id={{query_custom_id}}&time1={{time1}}&time2={{time2}}&file_name={{file_name}}"><a href="#">确定</a></li>
+                <li><a href="#">第{{page.number}}/{{page.paginator.num_pages}}页   共{{ page.paginator.num_pages }}页</a></li>
+            </ul>
+ 
+ -->
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="confirm_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body" align="middle">
+                    <span><font color="red">确定要匹配此文件吗？</font></span>
+                    <input type="hidden" id="confirm_fileid">
+                    <div align='left'>
+                    <label>匹配项目选择</label>
+                    <select class="form-control" id="select-task">
+                    {%for sort in permission_sort%}
+                        {%for key, value in permission.items %}
+                            {%if key == sort%}
+                            <option value="{{key}}">{{value}}</option>
+                            {%endif%}
+                        {%endfor%}
+                    {%endfor%}
+                    </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-default" onclick="start_mapping();">开始匹配</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="select_xd_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body" align="middle">
+                    <span><font color="red">确定要匹配此文件吗？</font></span>
+                    <div align='left'>
+                    <label>匹配项目选择:</label><br>
+                            <input type='hidden' id='confirm_fileid2' name= 'confirm_fileid2'/>
+                            <input type="hidden" id='confirm_select' name="confirm_select"/>
+                            {%if credit_permission.behavior_xd_permission%}
+                            <input type="checkbox" name ="behavior5" id="behavior5"/>行为数据
+                            {%endif%}
+                            {%if credit_permission.special_xd_permission%}
+                            <input type="checkbox" name="special5" id="special5"/>特殊名单
+                            {%endif%}
+                            {%if credit_permission.apply_xd_permission%}
+                            <input type="checkbox" name = "apply5" id="apply5"/>申请记录
+                            {%endif%}
+                            {%if credit_permission.account_xd_permission%}
+                            <input type="checkbox" name = "account5" id="account5"/>收支等级
+                            {%endif%}
+                            {%if credit_permission.paycon_xd_permission%}
+                            <input type="checkbox" name="paycon5" id="paycon5"/>支付消费
+                            {%endif%}
+                            <br>
+                            {%if credit_permission.monthaccount_xd_permission%}
+                            <input type="checkbox" name = "monthaccount5" id="monthaccount5"/>月度收支等级评估
+                            {%endif%}
+                            {%if credit_permission.telecheck_xd_permission%}
+                            <input type="checkbox" name = "telecheck5" id="telecheck5"/>手机实名验证
+                            {%endif%}
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                            <button type="button" class="btn btn-default" onclick="submit();" >开始匹配</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="select_hx_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body" align="middle">
+                    <span><font color="red">确定要匹配此文件吗？</font></span>
+                    <div align='left'>
+                    <label>匹配项目选择:</label><br>
+                            <input type='hidden' id='confirm_fileid2' name= 'confirm_fileid2'/>
+                            <input type="hidden" id='confirm_select' name="confirm_select"/>
+                            {%if portrait_permission.behavior_hx_permission%}
+                            <input type="checkbox" name ="behavior" id="behavior"/>行为数据
+                            {%endif%}
+                            {%if portrait_permission.special_hx_permission%}
+                            <input type="checkbox" name="special" id="special"/>特殊名单
+                            {%endif%}
+                            {%if portrait_permission.apply_hx_permission%}
+                            <input type="checkbox" name = "apply" id="apply"/>申请记录
+                            {%endif%}
+                            {%if portrait_permission.account_hx_permission%}
+                            <input type="checkbox" name = "account" id="account"/>收支等级
+                            {%endif%}
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                            <button type="button" class="btn btn-default" onclick="submit();" >开始匹配</button>
+                        </div>
+                    </div>
+                </div>
+            </div>	
+        </div>
+    </div>
+
+    <div class="modal fade" id="select_xd3_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body" align="middle">
+                    <span><font color="red">确定要匹配此文件吗？</font></span>
+                    <div align='left'>
+                    <label>匹配项目选择:</label><br>
+                            <input type='hidden' id='confirm_fileid2' name= 'confirm_fileid2'/>
+                            <input type="hidden" id='confirm_select' name="confirm_select"/>
+                            <input type="hidden" id="xd3_sort" name="xd3_sort" value="{{js_xd3_sort}}" />
+                            反欺诈：
+                            <br>
+                            {%for sort in qz_sort%}
+                                {%for key, item in xd3_permission.items%}
+                                    {%if sort == key%}
+                                        <input type="checkbox" name ="{{key}}" id="{{key}}"/>{{item}}
+                                    {%endif%}
+                                {%endfor%}
+                            {%endfor%}
+                            <br>
+                            <br>
+                            用户信用评估：
+                            <br>
+                            {%for sort in xy_sort%}
+                                {%for key, item in xd3_permission.items%}
+                                    {%if sort == key%}
+                                        <input type="checkbox" name ="{{key}}" id="{{key}}"/>{{item}}
+                                    {%endif%}
+                                {%endfor%}
+                            {%endfor%}
+                            <br>
+                            <br>
+                            百融评分：
+                            <br>
+                            {%for sort in score_sort%}
+                                {%for key, item in xd3_permission.items%}
+                                    {%if sort == key%}
+                                        <input type="checkbox" name ="{{key}}" id="{{key}}"/>{{item}}
+                                    {%endif%}
+                                {%endfor%}
+                            {%endfor%}
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                            <button type="button" class="btn btn-default" onclick="submit();" >开始匹配</button>
+                        </div>
+                    </div>
+                </div>
+            </div>  
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="select_operator_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body" align="middle">
+                    <span><font color="red">确定要匹配此文件吗？</font></span>
+                    <div align='left'>
+                    <label>匹配项目选择(单选):</label><br>
+                            <input type='hidden' id='confirm_fileid2' name= 'confirm_fileid2'/>
+                            <input type="hidden" id='confirm_select' name="confirm_select"/>
+                            中国联通：
+                            <br>
+                            <input type="checkbox" name ="lt_cell_state" id="lt_cell_state"/>手机号码状态
+                            <input type="checkbox" name="lt_card_name" id="lt_card_name"/>身份证件姓名验证
+                            <br>
+                            <br>
+                            中国电信：
+                            <br>
+                            <input type="checkbox" name = "dx_cell_state" id="dx_cell_state"/>手机号码状态
+                            <input type="checkbox" name = "dx_card_name" id="dx_card_name"/>身份证件姓名验证
+                            <br>
+                            <br>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                            <button type="button" class="btn btn-default" onclick="operator_submit();" >开始匹配</button>
+                        </div>
+                    </div>
+                </div>
+            </div>  
+        </div>
+    </div>
+
+    <div class="modal fade" id="select_bcjq_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body" align="middle">
+                    <span><font color="red">确定要匹配此文件吗？</font></span>
+                    <div align='left'>
+                    <label>银行卡鉴权匹配项目选择(单选):</label><br>
+                            <br>
+                            <input type="checkbox" name = "bcjq_card_name" id="bcjq_card_name"/>银行卡姓名鉴权
+                            <input type="checkbox" name = "bcjq_card_cell" id="bcjq_card_cell"/>银行卡手机号鉴权
+                            <br>
+                            <input type="checkbox" name = "bcjq_card_name_id" id="bcjq_card_name_id"/>银行卡姓名身份证鉴权
+                            <input type="checkbox" name = "bcjq_name_id_cell" id="bcjq_name_id_cell"/>银行卡姓名身份证手机号鉴权
+                            <br>
+                            <br>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                            <button type="button" class="btn btn-default" onclick="bcjq_submit();" >开始匹配</button>
+                        </div>
+                    </div>
+                </div>
+            </div>  
+        </div>
+    </div>
+
+    <div class="modal fade" id="select_zcx_sxzx_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body" align="middle">
+                    <span><font color="red">确定要匹配此文件吗？</font></span>
+                    <div align='left'>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                            <button type="button" class="btn btn-default" onclick="zcx_sxzx_submit();" >开始匹配</button>
+                        </div>
+                    </div>
+                </div>
+            </div>  
+        </div>
+    </div>
+
+    <div class="modal fade" id="select_loss_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body" align="middle">
+                    <span><font color="red">确定要匹配此文件吗？</font></span>
+                    <div align='left'>
+                    <label>失联ICE匹配项目选择(单选):</label><br>
+                            <input type='hidden' id='confirm_fileid2' name= 'confirm_fileid2'/>
+                            <input type="hidden" id='confirm_select' name="confirm_select"/>
+                            <br>
+                            <input type="checkbox" name = "loss_data" id="loss_data"/>信息补充
+                            <input type="checkbox" name = "loss_mark" id="loss_mark"/>营销失联
+                            <input type="checkbox" name = "loss_collect" id="loss_collect"/>催收失联
+                            <br>
+                            <br>
+                            <label for="loss_code">授权码:</label>
+                            <input type="text" id="loss_code" name="loss_code" style="width: 350px" />
+                            <button type="button" class="btn btn-default" onclick="mail_to_coder();" style="margin-left: 10px">获取授权码</button>
+                            <br>
+                            <br>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                            <button type="button" class="btn btn-default" onclick="loss_submit();" >开始匹配</button>
+                        </div>
+                    </div>
+                </div>
+            </div>  
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="select_qy_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body" align="middle">
+                    <span><font color="red">确定要匹配此文件吗？</font></span>
+                    <div align='left'>
+                    <label>企业信息查询选择(单选):</label><br>
+                            <br>
+                            <input type="checkbox" name = "bcjq_card_name" id="name_company"/>企业名称查询企业信息
+                            <input type="checkbox" name = "bcjq_card_cell" id="card_company"/>身份证查询关联企业信息
+                            <br>
+                            <br>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                            <button type="button" class="btn btn-default" onclick="qy_submit();" >开始匹配</button>
+                        </div>
+                    </div>
+                </div>
+            </div>  
+        </div>
+    </div>
+
+        <div class="modal fade" id="select_hx3_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body" align="middle">
+                    <span><font color="red">确定要匹配此文件吗？</font></span>
+                    <div align='left'>
+                    <label>匹配项目选择:</label><br>
+                            <input type='hidden' id='confirm_fileid2' name= 'confirm_fileid2'/>
+                            <input type="hidden" id='confirm_select' name="confirm_select"/>
+                            <input type="hidden"  id='hx3_sort' name="hx3_sort" value="{{js_hx3_sort}}" />
+                            {%for sort in hx3_sort%}
+                                {%for key, item in hx3_permission.items%}
+                                    {%if key == sort%}
+                                        <input type="checkbox" name ="{{key}}" id="{{key}}"/> {{item}}
+                                    {%endif%}
+                                {%endfor%}
+                            {%endfor%}
+                            {%if 'auth3' in hx3_permission%}
+                            <input type="checkbox" name ="auth3" id="auth3"/>身份信息核查
+                            {%endif%}
+                            {%if 'stab3' in hx3_permission%}
+                            <input type="checkbox" name ="stab3" id="stab3"/>稳定性评估
+                            {%endif%}
+                            {%if 'cons3' in hx3_permission%}
+                            <input type="checkbox" name ="cons3" id="cons3"/>商品消费评估
+                            {%endif%}
+                            {%if 'title3' in hx3_permission%}
+                            <input type="checkbox" name ="title3" id="title3"/>企业主/企业高管
+                            {%endif%}
+                            {%if 'assets3' in hx3_permission%}
+                            <input type="checkbox" name ="assets3" id="assets3"/>资产评估
+                            {%endif%}
+                            {%if 'media3' in hx3_permission%}
+                            <input type="checkbox" name ="media3" id="media3"/>媒体阅览评估
+                            {%endif%}
+                            {%if 'brand3' in hx3_permission%}
+                            <input type="checkbox" name ="brand3" id="brand3"/>品牌兴趣评估
+                            {%endif%}
+                            {%if 'special3' in hx3_permission%}
+                            <input type="checkbox" name ="special3" id="special3"/>特殊名单评估
+                            {%endif%}
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                            <button type="button" class="btn btn-default" onclick="submit();" >开始匹配</button>
+                        </div>
+                    </div>
+                </div>
+            </div>  
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+{% block js %}
+<script src="/static/js/file-operate.js"></script>
+<script src="/static/js/file_custom.js"></script>
+<div class="footer">
+		Copyright © 2015百融（北京）金融信息服务股份有限公司.All Right Reserved.
+	</div>
+{% endblock %}

@@ -1,0 +1,7 @@
+Authentication_id:auth_id
+Authentication_cell:auth_cell
+Authentication_mail:auth_mail
+Authentication_key_relation:auth_key_relation
+Authentication_tel_home:auth_home_tel
+Authentication_tel_biz:auth_biz_tel
+Authentication_name:auth_name

@@ -1,0 +1,236 @@
+{% extends 'include/base.html' %}
+
+{% block content %}
+
+<style type="text/css">
+/**{
+    margin: 0;
+    padding: 0;
+}
+#head #subtitle {
+    font-size: 20px;
+    margin-left: -83%;
+}
+.li1{
+    float: left;
+    list-style-type: none;
+    background: -red;
+    padding:0px 44px;
+    height: 50px;
+    line-height: 50px;
+    font-family: "微软雅黑";
+    font-size: 16px;
+    text-align: center;
+    
+}
+#png{
+    position: absolute;
+    left: 0;
+}
+#user ul{
+    margin-top:15px;
+}
+#user ul li {
+    float: left;
+}
+.clearfix:after{
+    content: "";
+    height: 0;
+    display: block;
+    overflow: hidden;
+    clear: both;
+}
+.li1 input{
+    line-height: 26px;
+    height: 26px;
+}
+.li1 select{
+    width: 120px;
+}*/
+.footer{
+    font-size: 18px;
+    text-align: center;
+    width: 100%;
+    position: absolute;
+    bottom: 20px;
+}
+/*body{
+    text-align: center;
+}
+.container .row-fluid #user{
+    width: 85%;
+    padding:0 20px;
+    margin: 0 auto;
+    margin-left: 7.5%;
+    margin-top: 20px;
+    box-shadow: 1px 1px 1px 1px #ccc;
+    text-align: center;
+    font-family: "微软雅黑";
+    font-size: 20px;
+    line-height: 20px;
+    background: #FFFFFF;
+    border-radius: 10px;
+}*/
+</style>
+
+
+
+
+<div class="panel panel-default" style="width:80%; margin-left:10%;">
+  <div class="panel-heading">
+    <h3 class="panel-title">搜索</h3>
+  </div>
+  <div class="panel-body">
+    <form  action="/als/analyst/sampling_condition/" method="post">{%csrf_token%}
+      <p style="line-height:14px; color:red; text-align: center; ">申请时间默认为当前时间</p>
+      <p style="line-height:14px; color:red; text-align: center; ">{{err}}</p>
+      <table>
+      <tr>
+        <td class="query_td"><label for="company_cate" >客群类别：</label></td>
+        <td class="query_td">
+            <select class="form-control" name="company_cate">
+            {% for value, name in file_source_type %}
+            <option value="{{name}}">{{name}}</option>
+            {% endfor %}
+            </select>
+        </td>
+        <td class="query_td"><label for="collateral" style="margin-left:50px;">抵押类型：</label></td>
+        <td class="query_td">
+            <select  class="form-control" name="collateral">
+              {% for value, name in guarantee_type %}
+              <option value="{{name}}">{{name}}</option>
+              {% endfor %}
+            </select>
+        </td>
+        <td class="query_td"><label for="user_type" style="margin-left:50px;">用户对象：</label></td>
+        <td class="query_td">
+            <select class="form-control" name='user_type'>
+              {% for value, name in user_type %}
+              <option value="{{name}}">{{name}}</option>
+              {% endfor %}
+            </select>
+        </td>
+
+        <td class="query_td"><label for="apply_date1" style="margin-left:50px;">申请时间：</label></td>
+
+        <td class="query_td"><input type="text" id='datepicker' name="apply_date1" class="form-control" /></td>
+        <td class="query_td">-------------------</td>
+        <td class="query_td"><input type="text" id='datepicker2' name="apply_date2" class="form-control"/></td>
+        <td class="query_td"><button type="submit" class="btn btn-primary" style="margin-left:50px;">提交</button></td>
+      </tr>
+      </table>
+      </form>
+  </div>
+</div>
+
+
+<div class="panel panel-default" style="width:80%; margin-left:10%;">
+  <div class="panel-heading">
+    <h3 class="panel-title">抽样文件</h3>
+  </div>
+  <div class="panel-body">
+
+      <form action="/als/analyst/make_file/"  method="post">
+        <table class="table table-striped" >
+
+        <thead><tr><th>分析师名称</th><th>上传到DTS时间</th><th>文件名称</th><th>客群类别</th><th>抵押类别</th><th>用户对象</th><th>总行数</th><th>抽取行数</th></tr></thead>
+        {% for data in datas %}
+          <input type="text" name="file_id" value="{{data.file_id}}" style="display:none;">
+          <input type="text" name="lines" value="{{data.lines}}" style="display:none;">
+          <tr><th>{{data.analyst}}</th><th>{{data.up_time}}</th><th>{{data.file}}</th><th>{{data.file_source_type}}</th><th>{{data.guarantee_type}}</th><th>{{data.user_type}}</th><th>{{data.lines}}</th><th><input type="text" class="form-control" name="nums"></th></tr>
+        {% endfor %}
+        </table>
+        <br>
+        <button type="submit"  class="btn btn-primary" style="float:right; margin-right:60px;">开始抽样</button>
+    </form>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <div class="container" style="margin: 0 auto;">
+
+  <div class="row-fluid">
+    <div class="span4 offset2" id="user">
+      <ul class="clearfix">
+      <form  action="/als/analyst/sampling_condition/" method="post">{%csrf_token%}
+      <p style="line-height:14px; color:red; text-align: center; ">申请时间默认为当前时间</p>
+      <p style="line-height:14px; color:red; text-align: center; ">{{err}}</p>
+       <li class="li1">客群类别：
+                <select id="company_cate" name = "company_cate">
+                {% for value, name in file_source_type %}
+                <option value="{{name}}">{{name}}</option>
+                {% endfor %}
+              </select>
+       </li>
+       <li class="li1">抵押类型：
+                <select id="collateral" name="collateral">
+                {% for value, name in guarantee_type %}
+                <option value="{{name}}">{{name}}</option>
+                {% endfor %}
+              </select>
+       </li>
+       <li class="li1">用户对象：
+                <select id="user_type" name = 'user_type'>
+                {% for value, name in user_type %}
+                <option value="{{name}}">{{name}}</option>
+                {% endfor %}
+              </select>
+       </li>
+       <li class="li1">申请时间：<input type="text" id='datepicker' name="apply_date1"/>&nbsp;&nbsp;&nbsp;--&nbsp;&nbsp;&nbsp;<input type="text" id='datepicker2' name="apply_date2"/></li>
+       <button type="submit" class="btn btn-success">提交</button>
+       </form>
+      </ul>
+    </div>
+  </div>
+</div> -->
+
+
+<!-- <div class="container" style="margin: 0 auto;">
+
+  <div class="row-fluid">
+    <div class="span4 offset2" id="user">
+        <table class="table table-hover" id="sampling_table">
+          <form action="/als/analyst/make_file/"  method="post">
+            <table class="table table-hover" id="sampling_table">
+
+            <thead><tr><th>分析师名称</th><th>上传到DTS时间</th><th>文件名称</th><th>客群类别</th><th>抵押类别</th><th>用户对象</th><th>总行数</th><th>抽取行数</th></tr></thead>
+            {% for data in datas %}
+              <input type="text" name="file_id" value="{{data.file_id}}" style="display:none;">
+              <input type="text" name="lines" value="{{data.lines}}" style="display:none;">
+              <tr><th>{{data.analyst}}</th><th>{{data.up_time}}</th><th>{{data.file}}</th><th>{{data.file_source_type}}</th><th>{{data.guarantee_type}}</th><th>{{data.user_type}}</th><th>{{data.lines}}</th><th><input type="text" name="nums"></th></tr>
+            {% endfor %}
+            </table>
+            <br>
+            <button type="submit"  class="btn btn-success">开始抽样</button>
+        </table>
+    </div>
+  </div>
+</div>
+ -->
+{% endblock %}
+  {% block js %}
+<script src="/static/js/file-operate.js"></script>
+<div class="footer">
+        Copyright © 2015百融（北京）金融信息服务股份有限公司.All Right Reserved.
+    </div>
+{% endblock %}

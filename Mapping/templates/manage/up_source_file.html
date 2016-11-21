@@ -1,0 +1,258 @@
+{% extends 'include/base.html' %}
+
+{% block content %}
+<!-- <style type="text/css">
+textarea{ 
+  width: 400px; 
+  height:80px; 
+}
+
+p {
+color:red;
+}
+#div{
+	width: 85%;
+	background: #FFFFFF;
+	overflow: hidden;
+	border-radius: 10px;
+	box-shadow: 1px 1px 1px 1px #ccc;
+	margin-top: 50px;
+	padding: 10px 25px;
+	font-family: "微软雅黑";
+	font-size: 16px;
+	padding-left: 50px;
+	
+}
+.controls .btn-success{
+	width: 100px;
+	margin-top: 20px;
+	background: #4388cd;
+}
+.input-xlarge{
+	display: block;
+	width: 200px;
+	height: 25px;
+	}
+font{
+	color: #000;
+	font-size: 16px;
+	font-family: '微软雅黑';
+}
+</style> -->
+
+
+<div class="panel panel-default" style="width:80%; margin-left:10%;">
+  <div class="panel-heading">
+    <h3 class="panel-title">上传客户文件</h3>
+  </div>
+  <div class="panel-body">
+    
+
+
+
+<form class="form-horizontal" enctype="multipart/form-data" method="post">
+    {% csrf_token %}
+    <label for="cus_id" style="font-size:16px;">选择客户</label>
+    <select class="form-control" name="cus_id" style="width:30%; font-size:15px;">
+        {% for custom in customs %}
+        <option value="{{custom.id}}">{{custom.name}}</option>
+        {% endfor %}
+    </select>
+    <br>
+
+    <label for="fileInput" style="font-size:16px;">选择文件</label>
+    <input class="input-file" id="fileInput" type="file" name="file">
+    <p style="font-size:18px;">1.只允许上传txt、csv、xlsx、xls文件</p>
+    <p style="font-size:18px;">2.文件上述不得超过40万行</p> 
+    <p style="font-size:18px;">3.文件编码必须为utf8格式</p>
+
+
+    <label for="file_source_type" style="font-size:16px;">选择客户群(必选)：</label>
+    <select class="form-control" name="file_source_type" id='file_source_type' style="width:30%; font-size:15px;">
+        {% for value, name in file_source_type %}
+        <option value="{{value}}">{{name}}</option>
+        {% endfor %}
+    </select>
+    <br>
+
+
+    <label for="guarantee_type" style="font-size:16px;">选择担保类型(必选)：</label>
+      <select class="form-control" name="guarantee_type" id="guarantee_type" style="width:30%; font-size:15px;">
+          {% for value, name in guarantee_type %}
+          <option value="{{value}}">{{name}}</option>
+          {% endfor %}
+      </select>
+      <br>
+
+    <label for="user_type" style="font-size:16px;">用户对象(必选)：</label>
+      <select class="form-control" name="user_type" id="user_type" style="width:30%; font-size:15px;">
+          {% for value, name in user_type %}
+          <option value="{{value}}">{{name}}</option>
+          {% endfor %}
+      </select>
+      <br>
+
+      <label for="loan_amount" style="font-size:16px;">贷款产品额度：(如果该测试样本需要入库供后续建模使用，请准确填写该批测试样本的贷款产品额度，不入库的样本可以不填)</label>
+      <textarea class="form-control" rows="3"  name="loan_amount" id="loan_amount" style="width:40%;" > </textarea>
+
+
+      <label for="loan_deadline" style="font-size:16px;">贷款产品期限：(如果该测试样本需要入库供后续建模使用，请准确填写该批测试样本的贷款产品期限，不入库的样本可以不填)</label>
+      <textarea class="form-control" rows="3"  name="loan_deadline" id="loan_deadline" style="width:40%;" > </textarea>
+
+          <label for="extra_info" style="font-size:16px;">备注</label>
+          <textarea class="form-control" rows="3" name="extra_info" id="extra_info" style="width:40%;"> </textarea>
+
+
+        <p style="font-size:18px; color:red;">{{ err|safe }}</p>
+        <button type="submit" class="btn btn-primary">提交</button>
+  </form>
+
+
+
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <div class="container" id="div">
+<form class="form-horizontal" enctype="multipart/form-data" method="post">
+    {% csrf_token %}
+    <fieldset>
+      <div id="legend" class="">
+        <legend class="">文件上传</legend>
+      </div>
+    
+    <div class="control-group">
+
+          <label class="control-label">选择客户</label>
+          <div class="controls">
+            <select class="input-xlarge" name="cus_id">
+                {% for custom in customs %}
+                <option value="{{custom.id}}">{{custom.name}}</option>
+                {% endfor %}
+            </select>
+          </div>
+
+        </div>
+
+
+    <div class="control-group">
+          <label class="control-label">选择文件</label>
+
+          <div class="controls">
+            <input class="input-file" id="fileInput" type="file" name="file">
+            <p class="help-block"><font>只允许上传txt、csv、xlsx、xls文件<br> <br>且文件上述不得超过40万行<br><br>文件编码必须为utf8格式</font></p>
+          </div>
+        </div>
+
+    <div class="control-group">
+          <label class="control-label">选择客户群(必选)：</label>
+          <div class="controls">
+            <select class="input-xlarge" name="file_source_type">
+                {% for value, name in file_source_type %}
+                <option value="{{value}}">{{name}}</option>
+                {% endfor %}
+            </select>
+          </div>
+    </div>
+
+    <div class="control-group">
+          <label class="control-label">选择担保类型(必选)：</label>
+          <div class="controls">
+            <select class="input-xlarge" name="guarantee_type">
+                {% for value, name in guarantee_type %}
+                <option value="{{value}}">{{name}}</option>
+                {% endfor %}
+            </select>
+          </div>
+    </div>
+
+    <div class="control-group">
+          <label class="control-label">用户对象(必选)：</label>
+          <div class="controls">
+            <select class="input-xlarge" name="user_type">
+                {% for value, name in user_type %}
+                <option value="{{value}}">{{name}}</option>
+                {% endfor %}
+            </select>
+          </div>
+    </div>
+
+    <div class="control-group">
+          <label class="control-label">贷款产品额度：(如果该测试样本需要入库供后续建模使用，请准确填写该批测试样本的贷款产品额度，不入库的样本可以不填)</label>
+          <div class="controls">
+            <div class="textarea">
+                  <textarea type="" name="loan_amount" maxlength="300"> </textarea>
+            </div>
+          </div>
+    </div>
+
+    <div class="control-group">
+
+          <label class="control-label">贷款产品期限：(如果该测试样本需要入库供后续建模使用，请准确填写该批测试样本的贷款产品期限，不入库的样本可以不填)</label>
+          <div class="controls">
+            <div class="textarea">
+                  <textarea type="" name="loan_deadline" maxlength="300"> </textarea>
+            </div>
+          </div>
+    </div>
+
+    <div class="control-group">
+
+
+          <label class="control-label">备注</label>
+          <div class="controls">
+            <div class="textarea">
+                  <textarea type="" class="" name="extra_info" maxlength="300"> </textarea>
+            </div>
+          </div>
+        </div><div class="control-group">
+
+        <span><font color="red">{{ err|safe }}</font></span>
+          <div class="controls">
+            <button type="submit" class="btn btn-success">提交</button>
+          </div>
+        </div>
+
+    </fieldset>
+  </form>
+
+</div> -->
+{% endblock %}

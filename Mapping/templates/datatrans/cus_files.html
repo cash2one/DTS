@@ -1,0 +1,87 @@
+{% extends 'include/base.html' %}
+{% load show_utils %}
+
+{% block content %}
+<div class="container">
+        <div class="container-fluid">
+
+            <table class="table table-hover">
+                <thead><tr><th>文件名称</th><th>备注</th><th>字段</th><th>文件大小</th><th>上传时间</th><th>操作</th></tr></thead>
+                <tbody>
+                    {% for file in page %}
+                        {%if forloop.counter|divisibleby:2 %}
+                            <tr id="file_{{file.id}}" style="background-color:#f9f9f9;" onMouseOver="this.style.backgroundColor='#BFDCF3';" onmouseout="this.style.backgroundColor='#f9f9f9';">
+                        {%else%}
+                            <tr id="file_{{file.id}}">
+                        {%endif%}
+
+                        <td style="display:none">{{file.id}}</td>
+                        <td><a href="/downloads/1/{{file.id}}/"> {{file}}</a></td>
+                        <td>{{file.extra_info}}</td>
+                        <td>{{file.fields|break_line:65}}</td>
+                        <td>{{file.file_size|filesizeformat}}</td>
+                        <td>{{file.create_time|date:"SHORT_DATE_FORMAT"}}</td>
+                        <td>
+                            <button class="btn btn-success" onclick="showfilecont({{file.id}},'/als/datatrans/sourcefile_head/');">提取</button></a>
+                        <td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <ul class="pager" style="float: right">
+
+                {% if page.has_previous %}
+                    <li><a href="/als/datatrans/cus_files/">首页</a></li>
+                    <li><a href="/als/datatrans/cus_files/?page={{ page.previous_page_number }}">前一页</a></li>
+                {% else %}
+                    <li><a href="#">首页</a></li>
+                    <li><a href="#">前一页</a></li>
+                {% endif %}
+
+                {% if page.has_next %}
+                    <li><a href="/als/datatrans/cus_files/?page={{ page.next_page_number }}">后一页</a></li>
+                    <li><a href="/als/datatrans/cus_files/?page={{ page.paginator.num_pages }}">末页</a></li>
+                {% else %}
+                    <li><a href="#">后一页</a></li>
+                    <li><a href="#">末页</a></li>
+                {% endif %}
+                    <li><input style="width:50px;margin-bottom:0px;" type="text" id="pageNum" name="pageNum"></li>
+                    <li onclick="window.location.href='/als/datatrans/cus_files/?page='+document.getElementById('pageNum').value;"><a href="#">确定</a></li>
+                    <li><a href="#">第{{page.number}}/{{page.paginator.num_pages}}页   共{{ page.number }}条</a></li>
+            </ul>
+</div>
+
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+   aria-labelledby="myModalLabel" aria-hidden="true">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close"
+               data-dismiss="modal" aria-hidden="true">
+                  &times;
+            </button>
+                    <h3>选择行</h3>
+         </div>
+         <div class="modal-body">
+             <div class="modal-body" id="trace2"></div>
+         </div>
+         <input type="hidden" id="header">
+         <div class="modal-footer">
+            <input type="hidden" id="skip" style="width:60px;margin-bottom: 0px;" value="1">
+            <span>分割符号:</span>
+            <input type="text" id="splitor" style="width:60px;margin-bottom: 0px;" value=",">
+            <button class="btn btn-primary" id="start_tag_p" onclick="start($('#splitor').val(),$('#quoter').val(), 'pick_file')">选择行</button>
+            <button class="btn btn-primary" id="pick_file" onclick="pick_file($('#splitor').val(),$('#skip').val())" >提取</button>
+            <button class="btn btn-primary" data-dismiss="modal" aria-hidden="true" onclick="modalc()">Close</button>
+         </div>
+      </div><!-- /.modal-content -->
+</div><!-- /.modal -->
+</div>
+
+{% endblock %}
+
+{% block js %}
+<script src="/static/js/file-operate.js"></script>
+{% endblock %}

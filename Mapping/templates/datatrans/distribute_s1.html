@@ -1,0 +1,59 @@
+{% extends 'include/base.html' %}
+
+{% block content %}
+<style type="text/css">
+textarea{ 
+  width: 400px; 
+  height:80px; 
+}
+</style>
+
+<div class="container">
+<form class="form-horizontal" enctype="multipart/form-data"  method="post">
+    {% csrf_token %}
+    <fieldset>
+      <div id="legend" class="">
+        <legend class="">表单名</legend>
+      </div>
+    <div class="control-group">
+
+          <!-- Select Multiple -->
+          <label class="control-label">选择匹配后的文件</label>
+          <div class="controls">
+            <select class="selectpicker" multiple style="width:auto;height:200px;min-width:100px" name="mappinged_files">
+                {% for file in mappinged_files %}
+                <option value="{{ file.id }}">{{file.get_base_name}}</option>
+                {% endfor %}
+            </select>
+          </div>
+        </div>
+    <div class="control-group">
+          <!-- Text input-->
+          <label class="control-label" for="input01">文件描述</label>
+          <div class="controls">
+              <textarea type=""  class="" name='file_desc' maxlength="300"></textarea>
+          </div>
+        </div>
+    <div class="control-group">
+          <label class="control-label">选择文件</label>
+
+          <!-- File Upload -->
+          <div class="controls">
+            <input class="input-file" id="fileInput" type="file" name="file">
+          </div>
+        </div>
+
+    <div class="control-group">
+          <label class="control-label"></label>
+
+          <!-- Button -->
+          <div class="controls">
+            <button type="submit" class="btn btn-primary">提交</button>
+          </div>
+        </div>
+
+    </fieldset>
+  </form>
+
+</div>
+{% endblock %}

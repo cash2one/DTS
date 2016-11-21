@@ -1,0 +1,47 @@
+.select-chexkbox {
+	width: 150px;
+	position: relative;
+}
+.select-chexkbox .control {
+	border: 1px solid #BBB;
+	overflow: hidden;
+}
+.select-chexkbox .control input {
+	width: 87%;
+	padding: 6px 10px;
+	outline: none;
+	border: 0;
+}
+.select-chexkbox .options {
+	margin: 0;
+	border: 1px solid #AAA;
+	padding: 1px 1px;
+	list-style: none;
+	position: absolute;
+	background-color: #FFF;
+	left: 0;
+	right: 0;
+	display: none;
+	z-index: 1;
+}
+.select-chexkbox .options li {
+	margin-top: 0px;
+}
+.select-chexkbox .options li:first-child {
+	margin-top: 0px;
+}
+.select-chexkbox .options li:hover {
+	background-color: #04C;
+	color: #FFF;
+}
+.select-chexkbox .options label {
+	display: block;
+	padding: 0px;
+}
+.select-chexkbox .options input {
+	margin: 0;
+}
+.select-chexkbox .options span {
+	margin-left: 3px;
+	vertical-align: middle;
+}

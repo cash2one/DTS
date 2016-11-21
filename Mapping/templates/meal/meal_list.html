@@ -1,0 +1,85 @@
+{% extends 'include/base.html' %}
+{% load show_utils %}
+
+{% block content %}
+<style type="text/css">
+.table{
+    width: 87%; 
+    margin: 0 auto;
+    margin-top: 40px;
+}
+.pager{
+    margin-right: 7%;
+}
+.table td a{
+    color:black;    
+}
+.footer{
+    font-size: 18px;
+    text-align: center;
+    width: 100%;
+    margin-top: 200px;
+}
+</style>
+<div class="container" style="background: #FFFFFF;width: 85%;border-radius: 10px;margin-top: 30px;min-height: 550px;">
+        <div class="container-fluid">
+
+            <table class="table table-hover">
+                <thead><tr><th>模块名称</th><th>中文名称</th><th>所属接口</th><th>是否有表头</th><th>操作</th></tr></thead>
+                <tbody>
+                    {% for file in page %}
+                        {%if forloop.counter|divisibleby:2 %}
+                            <tr id="file_{{file.id}}" style="background-color:#f9f9f9;" onMouseOver="this.style.backgroundColor='#BFDCF3';" onmouseout="this.style.backgroundColor='#f9f9f9';">
+                        {%else%}
+                            <tr id="file_{{file.id}}">
+                        {%endif%}
+
+                        <td style="display:none">{{file.id}}</td>
+                        <td><a href="/als/meal/get_heads/?meal_id={{file.id}}">{{file.name}}</a></td>
+                        <td>{{file.chinese_name}}</td>
+                        <td>{{file.interface}}</td>
+                        <td>{{file.head_status}}</td>
+                        <td>
+                            <button class="btn btn-primary" onclick="del_meal({{file.id}})"  id="del_meal" value="{{file.id}}" style="width:80px;">删除</button>
+                            <a href="/als/meal/change_head/?meal_id={{file.id}}"><button class="btn btn-success" style="width:100px;" >修改表头</button></a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <ul class="pager" style="float: right">
+
+                {% if page.has_previous %}
+                    <li><a href="/als/meal/meal_list/">首页</a></li>
+                    <li><a href="/als/meal/meal_list/?page={{ page.previous_page_number }}">前一页</a></li>
+                {% else %}
+                    <li><a href="#">首页</a></li>
+                    <li><a href="#">前一页</a></li>
+                {% endif %}
+
+                {% if page.has_next %}
+                    <li><a href="/als/meal/meal_list/?page={{ page.next_page_number }}">后一页</a></li>
+                    <li><a href="/als/meal/meal_list/?page={{ page.paginator.num_pages }}">末页</a></li>
+                {% else %}
+                    <li><a href="#">后一页</a></li>
+                    <li><a href="#">末页</a></li>
+                {% endif %}
+                    <li><input style="width:50px;margin-bottom:0px;" type="text" id="pageNum" name="pageNum"></li>
+                    <li onclick="window.location.href='/als/meal/meal_list/?page='+document.getElementById('pageNum').value;"><a href="#">确定</a></li>
+                    <li><a href="#">第{{page.number}}/{{page.paginator.num_pages}}页   共{{ page.paginator.num_pages}}页</a></li>
+            </ul>
+</div>
+</div>
+<div class="footer">
+        Copyright © 2015百融（北京）金融信息服务股份有限公司.All Right Reserved.
+</div>
+
+</div>
+
+
+{% endblock %}
+
+{% block js %}
+<script src="/static/js/file-operate.js"></script>
+{% endblock %}

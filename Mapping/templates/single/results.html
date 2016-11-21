@@ -1,0 +1,163 @@
+{% extends 'include/base.html' %}
+
+{% block content %}
+<style type="text/css">
+textarea{ 
+  width: 400px; 
+  height:80px; 
+}
+
+p {
+color:red;
+}
+#div{
+    width: 85%;
+    background: #FFFFFF;
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 1px 1px 1px 1px #ccc;
+    margin-top: 50px;
+    padding: 10px 25px;
+    font-family: "微软雅黑";
+    font-size: 16px;
+    padding-left: 50px;
+    
+}
+.controls .btn-success{
+    width: 100px;
+    margin-top: 20px;
+    background: #4388cd;
+}
+.input-xlarge{
+    display: block;
+    width: 200px;
+    height: 25px;
+    }
+font{
+    color: #000;
+    font-size: 16px;
+    font-family: '微软雅黑';
+}
+</style>
+<div class="container" id="div">
+{{hehe}}
+<br>
+画像接口：
+<span>
+    {{credit_result}}
+</span>
+<!--支付消费：
+<table class="table table-hover">
+                <thead><th>字段</th><th>字段值</th></tr></thead>
+                <tbody>
+                    {% for key in pc_keys %}
+                        {%if forloop.counter|divisibleby:2 %}
+                            <tr id="file_{{file}}" style="background-color:#f9f9f9;" onMouseOver="this.style.backgroundColor='#BFDCF3';" onmouseout="this.style.backgroundColor='#f9f9f9';">
+                        {%else%}
+                            <tr>
+                        {%endif%}
+                        <td>{{key}}</td>
+                        <td>
+                        {% for key1,value in result_pc.items %}
+                            {%if key1 == key%}
+                                {{value}}
+                            {%endif%}
+                        {%endfor%}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+航旅行为：
+<table class="table table-hover">
+                <thead><th>字段</th><th>字段值</th></tr></thead>
+                <tbody>
+                    {% for key in jzd_keys%}
+                        {%if forloop.counter|divisibleby:2 %}
+                            <tr id="file_{{file}}" style="background-color:#f9f9f9;" onMouseOver="this.style.backgroundColor='#BFDCF3';" onmouseout="this.style.backgroundColor='#f9f9f9';">
+                        {%else%}
+                           <tr>
+                        {%endif%}
+                        <td>{{key}}</td>
+                        <td>
+                        {% for key1,value in result_jzd.items %}
+                            {%if key1 == key%}
+                                {{value}}
+                            {%endif%}
+                        {%endfor%}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+收支等级：
+<table class="table table-hover">
+                <thead><th>字段</th><th>字段值</th></tr></thead>
+                <tbody>
+                    {% for key in ld_keys %}
+                        {%if forloop.counter|divisibleby:2 %}
+                            <tr id="file}" style="background-color:#f9f9f9;" onMouseOver="this.style.backgroundColor='#BFDCF3';" onmouseout="this.style.backgroundColor='#f9f9f9';">
+                        {%else%}
+                            <tr>
+                        {%endif%}
+                        <td>{{key}}</td>
+                        <td>
+                        {% for key1,value in result_ld.items %}
+                            {%if key1 == key%}
+                                {{value}}
+                            {%endif%}
+                        {%endfor%}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+新收支等级：
+<table class="table table-hover">
+                <thead><th>字段</th><th>字段值</th></tr></thead>
+                <tbody>
+                    {% for key in ld2_keys %}
+                        {%if forloop.counter|divisibleby:2 %}
+                            <tr id="file}" style="background-color:#f9f9f9;" onMouseOver="this.style.backgroundColor='#BFDCF3';" onmouseout="this.style.backgroundColor='#f9f9f9';">
+                        {%else%}
+                            <tr>
+                        {%endif%}
+                        <td>{{key}}</td>
+                        <td>
+                        {% for key1,value in result_ld2.items %}
+                            {%if key1 == key%}
+                                {{value}}
+                            {%endif%}
+                        {%endfor%}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+画像接口：
+<table class="table table-hover">
+                <thead><th>字段</th><th>字段值</th></tr></thead>
+                <tbody>
+                    {% for key in credit_sort %}
+                        {%if forloop.counter|divisibleby:2 %}
+                            <tr id="file}" style="background-color:#f9f9f9;" onMouseOver="this.style.backgroundColor='#BFDCF3';" onmouseout="this.style.backgroundColor='#f9f9f9';">
+                        {%else%}
+                            <tr>
+                        {%endif%}
+                        <td>{{key}}</td>
+                        <td>
+                        {% for key1,value in result_credit.items %}
+                            {%if key1 == key%}
+                                {{value}}
+                            {%endif%}
+                        {%endfor%}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>-->
+
+</div>
+{% endblock %}

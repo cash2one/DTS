@@ -1,0 +1,83 @@
+{% extends 'include/base.html' %}
+
+{% block content %}
+<style type="text/css">
+textarea{ 
+  width: 400px; 
+  height:80px; 
+}
+
+p {
+color:red;
+}
+#div{
+    width: 85%;
+    background: #FFFFFF;
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 1px 1px 1px 1px #ccc;
+    margin-top: 50px;
+    padding: 10px 25px;
+    font-family: "微软雅黑";
+    font-size: 16px;
+    padding-left: 50px;
+    
+}
+.controls .btn-success{
+    width: 100px;
+    margin-top: 20px;
+    background: #4388cd;
+}
+.input-xlarge{
+    display: block;
+    width: 200px;
+    height: 25px;
+    }
+font{
+    color: #000;
+    font-size: 16px;
+    font-family: '微软雅黑';
+}
+</style>
+<div class="container" id="div">
+<form class="form-horizontal" action="/accounts/verify/" method="post">
+    {% csrf_token %}
+    <fieldset>
+      <div id="legend" class="">
+        <legend class="">验证身份</legend>
+      </div>
+    
+
+    <div class="control-group">
+          <!-- Select Basic -->
+          <label class="control-label">请输入邮箱：</label>
+          <div class="controls">
+            <input type='text' name = 'mail' id="mail" /><button type="button" id='re_passwd'>发送验证码</button>
+          </div>
+    </div>
+
+    <div class="control-group">
+          <!-- Select Basic -->
+          <label class="control-label">请输入验证码：</label>
+          <div class="controls">
+            <input type='text' name = 'verify'/>
+          </div>
+    </div>
+
+
+        <span><font color="red">{{ err|safe }}</font></span>
+          <!-- Button -->
+          <div class="controls">
+            <button type="submit" class="btn btn-success">提交</button>
+          </div>
+        </div>
+
+
+    </fieldset>
+  </form>
+
+</div>
+{% endblock %}
+{% block js %}
+<script src="/static/js/file-operate.js"></script>
+{% endblock %}

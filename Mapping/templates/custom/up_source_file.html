@@ -1,0 +1,72 @@
+{% extends 'include/base.html' %}
+
+{% block content %}
+<style type="text/css">
+/*textarea{ 
+  width: 400px; 
+  height:80px; 
+}
+
+p {
+color:red;
+}*/
+.footer{
+	font-size: 18px;
+	text-align: center;
+	width: 100%;
+	position: absolute;
+  bottom: 20px;
+}
+</style>
+
+
+
+
+
+<div class="panel panel-default" style="width:80%; margin-left:10%;">
+  <div class="panel-heading">
+    <h3 class="panel-title">上传文件</h3>
+  </div>
+  <div class="panel-body">
+    <form  enctype="multipart/form-data" method="post">
+    {% csrf_token %}
+    <br>
+        <input type="file" id="exampleInputFile" name="file"/>
+    <p class="tishi" style="color: black; font-size: 25px;font-family: '微软雅黑';">
+      文件不得超过30万行<br><br>文件编码必须为utf8格式
+    </p>
+    <label for="name" style="font-size:25px;">备注:</label>
+    <textarea class="form-control" rows="5"  id="text" name="extra_info" style="width:40%;"></textarea>
+    <br>
+    <p><font color="red" style="font-size:25px;">{{ err|safe }}</font></p>
+    <button type="submit" class="btn btn-primary btn-lg">提交</button>
+  </form>
+  </div>
+</div>
+
+
+<!-- <div class="container">
+<form class="form-horizontal" enctype="multipart/form-data" method="post">
+    {% csrf_token %}
+    <div id="bd">
+    <span class="title">文件上传</span>
+   	<div id="file">
+   		<input type="file"  id="upfile" name="file"/>
+   	</div >
+    <p class="tishi">
+    	<font style="color: #000;font-size: 16px;font-family: '微软雅黑';">文件不得超过30万行<br><br>文件编码必须为utf8格式</font>
+    </p>
+    <p>备注:</p><textarea id="text" name="extra_info"></textarea>
+     <input type="submit" id="tijiao" value="提交"/>
+    <span><font color="red">{{ err|safe }}</font></span>
+    </div>
+   
+
+  </form>
+
+</div> -->
+<div class="footer">
+		Copyright © 2015百融（北京）金融信息服务股份有限公司.All Right Reserved.
+</div>
+
+{% endblock %}

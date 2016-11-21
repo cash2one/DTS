@@ -1,0 +1,95 @@
+{% extends 'include/base.html' %}
+{% load show_utils %}
+
+{% block content %}
+
+<div class="container">
+        <div class="container-fluid">
+
+            <table class="table table-hover">
+                <thead><tr><th>文件名称</th><th>字段</th><th>备注</th><th>行数</th><th>上传时间</th><th>操作</th></tr></thead>
+                <tbody>
+                    {% for file in page %}
+                        {%if forloop.counter|divisibleby:2 %}
+                            <tr id="file_{{file.id}}" style="background-color:#f9f9f9;" onMouseOver="this.style.backgroundColor='#BFDCF3';" onmouseout="this.style.backgroundColor='#f9f9f9';">
+                        {%else%}
+                            <tr id="file_{{file.id}}">
+                        {%endif%}
+
+                        <td style="display:none">{{file.id}}</td>
+                        <td><a href="/downloads/1/{{file.id}}/"> {{file}}</a></td>
+                        <td>{{file.fields|break_line:70}}</td>
+                        <td>{{file.extra_info}}</td>
+                        <td>{{file.total_lines|default_if_none:'---'}}</td>
+                        <td>{{file.create_time|date:"SHORT_DATE_FORMAT"}}</td>
+                        <td>
+                            <button class="btn btn-primary" onclick="showfilecont({{file.id}},4);" id="file_{{file.id}}" >标注</button>
+                        <td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <ul class="pager" style="float: right">
+
+                {% if page.has_previous %}
+                    <li><a href="/als/checker/source_file/">首页</a></li>
+                    <li><a href="/als/checker/source_file/?page={{ page.previous_page_number }}">前一页</a></li>
+                {% else %}
+                    <li><a href="#">首页</a></li>
+                    <li><a href="#">前一页</a></li>
+                {% endif %}
+                <li><a href="#">第{{page.number}}/{{page.paginator.num_pages}}页   共{{ page.paginator.num_pages}}页</a></li>
+                {% if page.has_next %}
+                    <li><a href="/als/checker/source_file/?page={{ page.next_page_number }}">后一页</a></li>
+                    <li><a href="/als/checker/source_file/?page={{ page.paginator.num_pages }}">末页</a></li>
+                {% else %}
+                    <li><a href="#">后一页</a></li>
+                    <li><a href="#">末页</a></li>
+                {% endif %}
+                    <li><input style="width:50px;margin-bottom:0px;" type="text" id="pageNum" name="pageNum"></li>
+                    <li onclick="window.location.href='/als/checker/source_file/?page='+document.getElementById('pageNum').value;"><a href="#">确定</a></li>
+                    <li><a href="#">第{{page.number}}/{{page.paginator.num_pages}}页   共{{ page.number }}条</a></li>
+            </ul>
+</div>
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+   aria-labelledby="myModalLabel" aria-hidden="true">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close"
+               data-dismiss="modal" aria-hidden="true">
+                  &times;
+            </button>
+            <h4 class="modal-title" id="myModalLabel">
+                    <h3>文件内容</h3>
+                    <p style="font-size:18px; color:red;">文件标注字段必须包含数据观测日期和（身份证,手机,邮箱）三项中的一项</p>
+                    <p style="color:Red">申请日期和数据观测日期字段对应的时间格式必须为：YYYY-MM-DD，如：2014-03-05。</p>
+            </h4>
+         </div>
+         <div class="modal-body">
+            <div class="modal-body" id="trace2">
+         </div>
+         <input type="hidden" id="header">
+         <div class="modal-footer">
+                    <span>跳过几行:</span>
+                    <input type="text" id="skip" style="width:60px;margin-bottom: 0px;" value="1">
+                    <span>分割符号:</span>
+                    <input type="text" id="splitor" style="width:60px;margin-bottom: 0px;" value=",">
+                    <button class="btn btn-primary" id="start_tag" onclick="start($('#splitor').val(),$('#quoter').val(), 'mapping')">开始标注</button>
+                    <button class="btn btn-primary" id="save_tag" onclick="savetag($('#splitor').val(),$('#skip').val(),1)" >标注</button>
+                    <button class="btn btn-primary" data-dismiss="modal" aria-hidden="true" onclick="modalc()">Close</button>
+                    <br></br>
+                    
+         </div>
+      </div><!-- /.modal-content -->
+</div><!-- /.modal -->
+</div>
+
+
+{% endblock %}
+
+{% block js %}
+<script src="/static/js/file-operate.js"></script>
+{% endblock %}

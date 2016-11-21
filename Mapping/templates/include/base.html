@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>DTS</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="/static/css/minmin.css" />
+<link rel="stylesheet" type="text/css" href="/static/css/bootstrap.css" />
+<link rel="stylesheet" type="text/css" href="/static/css/generalSelect.css"/>
+
+<link rel="stylesheet" type="text/css" href="/static/css/bootstrap-responsive.css"/>
+<link rel="stylesheet" type="text/css" href="/static/css/droplistcheckbox.css"/>
+
+
+<script src="/static/js/jquery.js"></script>
+<script src="/static/js/jquery-1.9.1.js"></script>
+<script src="/static/js/jquery-ui.js"></script> 
+<script src="/static/js/bootstrap.js"></script>
+<script src="/static/js/droplistcheckbox.js"></script>
+<script src="/static/js/index.js"></script>
+<script src="/static/js/generalSelect.js"></script>
+<link rel="stylesheet" type="text/css" href="/static/css/jquery-ui.css"/>
+
+<script>
+$.fn.modal.Constructor.prototype.enforceFocus = function () {};
+</script>
+<script>
+$(function(){ 
+    $("#datepicker").datepicker(); 
+    $("#datepicker2").datepicker();
+}); 
+</script>
+<style type="text/css">
+.nav navbar-nav .l1 a{
+    font-size: 18px;
+} 
+</style>
+
+
+</head>
+<body>
+
+<nav class="navbar navbar-inverse" role="navigation" >
+<div class="container-fluid">
+    <div class="navbar-header" style="margin-left:10%;">
+      <a class="navbar-brand" href="/" style="color:#FFFFFF; font-size:22px;">百融数据测试平台</a>
+    </div>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" style="margin-right:10%;">
+      <ul class="nav navbar-nav navbar-right">
+          {% if user.member.mem_type == 2 %}
+          <li role="presentation" class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+              Apicode <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu" role="menu">
+            {% for a in obj %}
+              <li><a href="/als/analyst/choice/?username={{user.username}}&apicode={{a}}" style="font-size:17px;">{{a}}</a></li>
+              {% endfor %}
+            </ul>
+          </li>
+          {% endif %}
+        <li><a href="#" style="font-size:17px;">登录用户：{{ user.username }}</a></li>
+        <li><a href="/accounts/logout/" style="font-size:17px;">退出</a></li>
+      </ul>
+      <ul class="nav navbar-nav">
+        {% if user.member.mem_type == 0 %}
+        <li class="l1"><a href="/als/manage/source_file/" style="font-size:17px;">客户文件</a></li>
+        <li class="l1"><a href="/als/manage/up_source_file/" style="font-size:17px;">上传客户文件</a></li>
+        <li class="l1"><a href="/als/analyst/sampling/" style="font-size:17px;">数据抽样</a></li> 
+        {% elif user.member.mem_type == 1 %}
+        <li class="l1 "><a href="/als/custom/up_file/" style="font-size:17px;">上传文件</a></li>
+        <li class="l1 "><a href="/als/custom/source_files/" style="font-size:17px;">上传文件列表</a></li>
+        {% elif user.member.mem_type == 2 %}
+        <li class="l1"><a href="/als/analyst/cus_files/" style="font-size:17px;">客户文件</a></li>
+        <li class="l1"><a href="/als/analyst/mapping_progress/" style="font-size:17px;">匹配进度</a></li>
+        <li class="l1"><a href="/als/analyst/my_cus/" style="font-size:17px;">我的客户</a></li>
+        <li class="l1"><a href="/als/analyst/loginfo/" style="font-size:17px;">分析师日志</a></li> 
+        {% elif user.member.mem_type == 3 %}
+        <li class="l1"><a href="/als/datatrans/cus_files/" style="font-size:17px;">提取文件</a></li>
+        <li class="l1"><a href="/als/datatrans/up_mappedfile/" style="font-size:17px;">上传匹配文件</a></li>
+        <li class="l1"><a href="/als/datatrans/third_mapedfile/" style="font-size:17px;">第三方匹配文件</a></li>
+        {% elif user.member.mem_type == 4 %}
+        <li class="l1"><a href="/als/single/single_map/" style="font-size:17px;">单项匹配</a></li>
+        {% elif user.member.mem_type == 5 %}
+        <li class="l1"><a href="/als/phone/file_list/" style="font-size:17px;">文件列表</a></li>
+        <li class="l1"><a href="/als/phone/up_file/" style="font-size:17px;">上传文件</a></li>
+        {% elif user.member.mem_type == 6 %}
+        <li class="l1"><a href="/als/meal/meal_list/" style="font-size:17px;">模块列表</a></li>
+        <li class="l1"><a href="/als/meal/meal_up/" style="font-size:17px;">添加模块</a></li>
+        <li class="l1"><a href="/als/meal/sort/" style="font-size:17px;">模块顺序</a></li>
+        {% elif user.member.mem_type == 7 %}
+        <li class="l1"><a href="/als/coder/create_code/">生成授权码</a></li>
+        <li class="l1"><a href="/als/coder/delete_all/">删除已过期的授权码</a></li>
+        <li class="l1"><a href="/als/coder/code_list/">授权码列表</a></li>
+        <li class="l1"><a href="/als/coder/datacode_list/">信息补充套餐</a></li>
+        <li class="l1"><a href="/als/coder/markcode_list/">营销失联套餐</a></li>
+        <li class="l1"><a href="/als/coder/collcode_list/">催收失联套餐</a></li>
+        {% endif %}
+      </ul>
+      
+    </div>
+  </div>
+</nav>
+    {% block content %}{% endblock %}
+  
+</body>
+{% block js %}
+{% endblock %}
+</html>

@@ -1,0 +1,91 @@
+body .container{
+	width: 100%;
+}
+#head{
+	margin: 0 auto;
+	width: 85%;
+	height: 50px;
+	background-color: #fff;
+	font-family: "微软雅黑";
+	font-size: 16px;
+	line-height: 50px;
+	border-radius: 10px;
+	position: relative;
+}
+#head a{
+	text-decoration: none;
+}
+#head ul {
+	position: absolute;
+	top:0px;
+	margin-left: 260px;
+}
+#subtitle{
+	font-size: 20px;
+	margin-left: 1%;
+}
+#head ul li{
+	list-style-type: none;
+	float: left;
+	margin:0 20px;
+}
+#d1{
+	position: absolute;
+	right: 0px;
+	top: 0px;
+	margin-right:20px;
+}
+.msg{
+	margin-right: 10px;
+	color:#337ab7;
+}
+#bd{
+	width: 86%;
+	min-height:550px;
+	/*border: 2px solid gray;*/
+	margin: 0 auto;
+	border-radius: 10px;
+	box-shadow: 1px 1px 1px 1px #CCCCCC;
+	margin-top: 40px;
+  	padding-left: 20px;
+  	position: relative;
+  	background: #fff;
+}
+.title{
+	display: block;
+	width: 100%;
+	font-family: "微软雅黑";
+	font-size: 25px;
+	padding-top:30px;
+	margin-bottom:40px;
+	
+}
+#upfile{
+	margin-bottom: 10px;
+	display: block;
+	width: 500px;
+	height: 30px;
+}
+#file{
+	margin: 20px 0 0 0;
+}
+.tishi{
+	font-family: "微软雅黑";
+	color: #fff;
+	font-size: 14px;
+	margin: 20px 0px;
+}
+#text{
+	resize: none;
+}
+#tijiao{
+	position: absolute;
+	display: block;
+	background: #4388cd;
+	width: 100px;
+	height: 35px;
+	border: 2px solid #4388cd;
+	border-radius: 10px;
+	bottom: 5px;
+	left: 20px;
+	color:#fff;

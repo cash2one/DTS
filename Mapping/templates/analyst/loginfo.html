@@ -1,0 +1,163 @@
+{% extends 'include/base.html' %}
+
+{% block content %}
+
+<style type="text/css">
+/**{
+    margin: 0;
+    padding: 0;
+}
+#head #subtitle {
+    font-size: 20px;
+    margin-left: -83%;
+}
+.li1{
+    float: left;
+    list-style-type: none;
+    background: -red;
+    padding:0px 44px;
+    height: 50px;
+    line-height: 50px;
+    font-family: "微软雅黑";
+    font-size: 16px;
+    text-align: center;
+    
+}
+#png{
+    position: absolute;
+    left: 0;
+}
+#user ul{
+    margin-top:15px;
+}
+#user ul li {
+    float: left;
+}
+.clearfix:after{
+    content: "";
+    height: 0;
+    display: block;
+    overflow: hidden;
+    clear: both;
+}
+.li1 input{
+    line-height: 26px;
+    height: 26px;
+}
+.li1 select{
+   */ width: 120px;
+}
+.footer{
+    font-size: 18px;
+    text-align: center;
+    width: 100%;
+    position: absolute;
+    bottom: 20px;
+}
+/*body{
+    text-align: center;
+}
+.container .row-fluid #user{
+    width: 85%;
+    padding:0 20px;
+    margin: 0 auto;
+    margin-left: 7.5%;
+    margin-top: 20px;
+    box-shadow: 1px 1px 1px 1px #ccc;
+    text-align: center;
+    font-family: "微软雅黑";
+    font-size: 20px;
+    line-height: 20px;
+    background: #FFFFFF;
+    border-radius: 10px;
+}*/
+</style>
+
+
+
+
+<div class="panel panel-default" style="width:80%; margin-left:10%;">
+  <div class="panel-heading">
+    <h3 class="panel-title">搜索</h3>
+  </div>
+  <div class="panel-body">
+    <form action="/als/analyst/loginfo/" method="get">
+    <table style="margin-left:10px;">
+    <tr>
+        <td class="query_td">
+            <label for="apply_date1" style="margin-right:0px;">匹配时间：</label>
+        </td>
+        <td class="query_td"></td>
+        <td class="query_td"><input type="text" class="form-control" id='datepicker' name="apply_date1"/></td>
+        <td class="query_td">-------------------</td>
+        <td class="query_td"><input type="text" class="form-control" id='datepicker2' name="apply_date2"  /></td>
+        <td class="query_td"><button type="submit" class="btn btn-primary" style="margin-left:100px;">提交</button></td>
+    </tr>
+    </table>
+    </form>
+  </div>
+</div>
+<table class="table table-striped" style="width:80%; margin-left:10%;">
+    <thead><tr><th>分析师账号</th><th>IP</th><th>文件名称</th><th>匹配接口</th><th>数量</th><th>匹配时间</th></tr></thead>
+    {% for data in page %}
+      <tr><th>{{data.username}}</th><th>{{data.ip}}</th><th>{{data.filename}}</th><th>{{data.query_interface}}</th><th>{{data.num}}</th><th>{{data.create_time}}</th></tr>
+    {% endfor %}
+</table>
+<div>
+<ul class="pager" style="float:right; margin-right:10%;">
+    {% if page.has_previous %}
+        <li><a href="/als/analyst/loginfo/?page_num={{ page.previous_page_number }}">前一页</a></li>
+    {% else %}
+        <li><a href="#">前一页</a></li>
+    {% endif %}
+    <li><a href="#">第{{page.number}}/{{page.paginator.num_pages}}页   共{{ page.paginator.num_pages }}页</a></li>
+    {% if page.has_next %}
+        <li><a href="/als/analyst/loginfo/?page_num={{ page.next_page_number }}">后一页</a></li>
+    {% else %}
+        <li><a href="#">后一页</a></li>
+    {% endif %}
+  </ul>
+</div>
+
+
+
+
+<!-- <div class="container" style="margin: 0 auto;">
+  <div class="row-fluid">
+    <div class="span4 offset2" id="user">
+    <form action="/als/analyst/loginfo/" method="get">
+    <li class="li1">匹配时间：<input type="text" id='datepicker' name="apply_date1"/>&nbsp;&nbsp;&nbsp;--&nbsp;&nbsp;&nbsp;<input type="text" id='datepicker2' name="apply_date2"/> <button class="btn btn-success">提交</button></li>
+    </form>
+       <br>
+        <table class="table table-hover" id="sampling_table">
+            <thead><tr><th>分析师账号</th><th>IP</th><th>文件名称</th><th>匹配接口</th><th>数量</th><th>匹配时间</th></thead>
+            {% for data in page %}
+              <tr><th>{{data.username}}</th><th>{{data.ip}}</th><th>{{data.filename}}</th><th>{{data.query_interface}}</th><th>{{data.num}}</th><th>{{data.create_time}}</th></tr>
+            {% endfor %}
+            </table>
+        </table>
+
+        <ul class="pager" style="float: right">
+            {% if page.has_previous %}
+                <li><a href="/als/analyst/loginfo/?page_num={{ page.previous_page_number }}">前一页</a></li>
+            {% else %}
+                <li><a href="#">前一页</a></li>
+            {% endif %}
+            <li><a href="#">第{{page.number}}/{{page.paginator.num_pages}}页   共{{ page.paginator.num_pages }}页</a></li>
+            {% if page.has_next %}
+                <li><a href="/als/analyst/loginfo/?page_num={{ page.next_page_number }}">后一页</a></li>
+            {% else %}
+                <li><a href="#">后一页</a></li>
+            {% endif %}
+          </ul>
+
+    </div>
+  </div>
+</div> -->
+
+<!-- <div class="footer" style="width:100%; text-align:center">
+        Copyright © 2015百融（北京）金融信息服务股份有限公司.All Right Reserved.
+</div> -->
+
+<script src="/static/js/file-operate.js"></script>
+{% endblock %}

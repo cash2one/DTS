@@ -1,0 +1,103 @@
+{% extends 'include/base.html' %}
+
+{% block content %}
+<style type="text/css">
+textarea{ 
+  width: 400px; 
+  height:80px; 
+}
+
+p {
+color:red;
+}
+#div{
+    width: 85%;
+    background: #FFFFFF;
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 1px 1px 1px 1px #ccc;
+    margin-top: 50px;
+    padding: 10px 25px;
+    font-family: "微软雅黑";
+    font-size: 16px;
+    padding-left: 50px;
+    
+}
+.controls .btn-success{
+    width: 100px;
+    margin-top: 20px;
+    background: #4388cd;
+}
+.input-xlarge{
+    display: block;
+    width: 200px;
+    height: 25px;
+    }
+font{
+    color: #000;
+    font-size: 16px;
+    font-family: '微软雅黑';
+}
+</style>
+<div class="container" id="div">
+<form class="form-horizontal" enctype="multipart/form-data" method="post">
+    {% csrf_token %}
+    <fieldset>
+      <div id="legend" class="">
+        <legend class="">添加模块</legend>
+      </div>
+
+    <div class="control-group">
+          <!-- Select Basic -->
+          <label class="control-label">接口请求名称：</label>
+          <div class="controls">
+            <input type="text" name='meal_name', id='meal_name'/>
+          </div>
+    </div>
+    <br>
+
+    <div class="control-group">
+          <!-- Select Basic -->
+          <label class="control-label">中文显示名称：</label>
+          <div class="controls">
+            <input type="text" name='chinese_name', id='chinese_name'/>
+          </div>
+    </div>
+    <br>
+
+    <div class="control-group">
+          <!-- Select Basic -->
+          <label class="control-label">所属接口：</label>
+          <div class="controls">
+            <select class="input-xlarge" name="interface">
+                <option value="通用版接口3.0">通用版接口3.0</option>
+                <option value="信贷版接口3.0">信贷版接口3.0</option>
+                <option value="海纳api">海纳api</option>
+            </select>
+          </div>
+    </div>
+    <br>
+
+
+    <div class="control-group">
+          <label class="control-label">选择表头文件:</label>
+          <!-- File Upload -->
+          <div class="controls">
+            <input class="input-file" id="fileInput" type="file" name="file">
+            <p class="help-block"><font>只允许上传txt文件<br>文件编码必须为utf8格式</font></p>
+          </div>
+        </div>
+
+              <span><font color="red">{{ err|safe }}</font></span>
+                <!-- Button -->
+                <div class="controls">
+                  <button type="submit" class="btn btn-success">提交</button>
+                </div>
+              </div>
+        </div>
+
+    </fieldset>
+  </form>
+
+</div>
+{% endblock %}

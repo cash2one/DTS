@@ -1,0 +1,7 @@
+Stability_id_number:stab_id_num
+Stability_cell_firsttime:stab_cell_firsttime
+Stability_cell_number:stab_cell_num
+Stability_mail_number:stab_mail_num
+Stability_name_number:stab_name_num
+Stability_tel_number:stab_tel_num
+Stability_addr_number:stab_addr_num

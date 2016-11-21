@@ -1,0 +1,101 @@
+{% extends 'include/base.html' %}
+
+{% block content %}
+<style type="text/css">
+textarea{ 
+  width: 400px; 
+  height:80px; 
+}
+
+p {
+color:red;
+}
+#div{
+    width: 85%;
+    background: #FFFFFF;
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 1px 1px 1px 1px #ccc;
+    margin-top: 50px;
+    padding: 10px 25px;
+    font-family: "微软雅黑";
+    font-size: 16px;
+    padding-left: 50px;
+    
+}
+.controls .btn-success{
+    width: 100px;
+    margin-top: 20px;
+    background: #4388cd;
+}
+.input-xlarge{
+    display: block;
+    width: 500px;
+    height: 25px;
+    }
+font{
+    color: #000;
+    font-size: 16px;
+    font-family: '微软雅黑';
+}
+</style>
+<div class="container" id="div">
+<form class="form-horizontal" enctype="multipart/form-data" method="post">
+    {% csrf_token %}
+    <fieldset>
+      <div id="legend" class="">
+        <legend class="">修改{{meal_name}}模块表头</legend>
+      </div>
+
+
+    <div class="control-group">
+          <label class="control-label">信贷版3.0页面显示顺序:</label>
+          <!-- File Upload -->
+          <div class="controls">
+            反欺诈：<input class="input-xlarge" id="fileInput" type="text" name="xd_sort_qz" value="{{xd_sort_qz}}"/>
+            信用评估：<input class="input-xlarge" id="fileInput" type="text" name="xd_sort_xy" value="{{xd_sort_xy}}"/>
+            百融评分：<input class="input-xlarge" id="fileInput" type="text" name="xd_sort_score" value="{{xd_sort_score}}"/>
+          </div>
+        </div>
+
+<br>
+    <div class="control-group">
+          <label class="control-label">画像版3.0页面显示顺序:</label>
+          <!-- File Upload -->
+          <div class="controls">
+            <input class="input-xlarge" id="fileInput" type="text" name="sort" value="{{sort}}"/>
+          </div>
+        </div>
+
+<br>
+    <div class="control-group">
+          <label class="control-label">信贷版3.0表头显示顺序:</label>
+          <!-- File Upload -->
+          <div class="controls">
+            <input class="input-xlarge" id="fileInput" type="text" name="xd_sort_head" value="{{xd_sort_head}}"/>
+          </div>
+        </div>
+
+<br>
+    <div class="control-group">
+          <label class="control-label">画像版3.0表头显示顺序:</label>
+          <!-- File Upload -->
+          <div class="controls">
+            <input class="input-xlarge" id="fileInput" type="text" name="sort_head" value="{{sort_head}}"/>
+          </div>
+        </div>
+
+              <span><font color="red">{{ err|safe }}</font></span>
+              <input type="text" id='meal_name' name="meal_name" value="{{meal_name}}" style="display:none;"/>
+                <!-- Button -->
+                <div class="controls">
+                  <button type="submit" class="btn btn-success">提交</button>
+                </div>
+              </div>
+        </div>
+
+    </fieldset>
+  </form>
+
+</div>
+{% endblock %}

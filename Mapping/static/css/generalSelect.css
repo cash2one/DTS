@@ -1,0 +1,102 @@
+
+
+.general_select{
+	min-height: 20px;
+	border: 1px solid #b0a296;
+	width: 80px;
+	color: #999;
+	font-size: 12px;
+	border-bottom: none;
+	position: relative;	
+	-webkit-user-select: none;
+	-moz-user-select: none; 
+	-ms-user-select: none; 
+	-o-user-select: none;
+	user-select: none; 
+}
+.general_select_ul{
+	list-style: none;
+	margin: 0;
+	padding: 2px 0;
+	border: 1px solid #b0a296;
+	position: absolute;
+	left: -1px;
+	width: 100%;
+	border-top:none;
+	z-index: 100;
+	background: white;
+	
+}
+.general_select_div{
+	width: 100%;
+	height: 20px;
+	border-bottom: 1px solid #b0a296;
+	position: relative;
+}
+.general_img{
+    width: 20px;
+    height: 20px;
+	float: left;
+	background:url('/static/img/se.png');
+}
+
+.general_div_selected{
+	width: 140px;
+	height: 20px;
+	line-height: 20px;
+	float: left;
+	padding: 0 5px;
+	overflow: hidden;
+}
+.general_select_ul li{
+	height: 20px;
+	line-height: 20px;
+	cursor: pointer;
+	overflow: hidden;
+	position: relative;
+    border: none;
+}
+.general_select_ul li .add{
+	height: 20px;
+	line-height: 20px;
+	width: 20px;
+	display: block;
+	float: right;
+	background: -green;
+	text-align: center;
+	font-size: 18px;
+	font-weight: bold;
+}
+.general_select_text{
+	background: -red;
+	width: 75px;
+	float: left;
+	display: block;
+	padding-left: 5px;
+	overflow: hidden;
+    
+}
+.general_select_text2{
+	background: -red;
+	width: 65px;
+	float: left;
+	display: block;
+	padding-left: 15px;
+	overflow: hidden;
+}
+
+.select_li_two{
+	display: none;
+}
+.select_add_li{
+	padding: 0;
+}
+.select_add_li span{
+	font-size: 12px;
+	height: 20px;
+	display: block;
+}
+.select_none{
+	display: none;
+}
+			

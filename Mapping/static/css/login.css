@@ -1,0 +1,79 @@
+*{
+	margin: 0;
+	padding: 0;
+}
+body{
+	background: url(../img/backgrund.png)  repeat-x;
+	background-color: #4388cd;
+}
+.input-xlarge{
+	padding: 8px;
+	width: 200px;
+	height: 35px;
+	border-radius: 8px;
+}
+#login_valid{
+	height: 34px;
+}
+#check{
+	padding: 8px;
+	width: 100px;
+	height: 35px;
+	border-radius: 8px;
+}
+#login{
+	background: url(../img/login.png) no-repeat;
+	width: 700px;
+	height: 500px;
+	position: relative;
+	margin: 15% 0 0 27%;
+	
+}	
+#login table{
+	position: absolute;
+	top: 13%;
+	left: 15%;
+}
+.footer{
+	position: relative;
+	font-size: 18px;
+	text-align: center;
+	margin-top: 100px;
+	
+}
+#login .font{
+	text-align: right;
+	font-family: "微软雅黑";
+	font-size: 20px;
+}
+#tijiao{
+	display: block;
+	width: 43%;
+	position: absolute;
+	bottom: 42%;
+	left: 18%;
+}
+#title{
+
+	width: 100%;
+	font-family: "微软雅黑";
+	font-size: 30px;
+	margin: 0 auto;
+	text-align: center;
+	
+}
+/*
+.loginform{
+	width: 100%;
+	height: 100%;
+	margin: 0 auto;
+	position: absolute;
+	top:30%;
+	left:32%;
+	background: url(../img/login.png) no-repeat;
+
+}	
+.font{
+	text-align: left;
+	margin-left: 27px;
+}*/

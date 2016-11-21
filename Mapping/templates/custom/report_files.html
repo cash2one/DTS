@@ -1,0 +1,68 @@
+{% extends 'include/base.html' %}
+
+{% block content %}
+<style type="text/css">
+/*	.table{
+	width: 87%;	
+	margin: 0 auto;
+	margin-top: 50px;
+}*/
+.footer{
+	font-size: 18px;
+	text-align: center;
+	width: 100%;
+	position: absolute;
+    bottom: 20px;
+}
+/*.pager{
+	margin-right: 7%;
+}*/
+</style>
+
+
+            <table class="table table-striped" style="width:80%; margin-left:10%;">
+                <thead><tr><th>文件名称</th><th>备注</th><th>文件大小</th><th>创建时间</th></tr></thead>
+                <tbody>
+                    {% for file in page %}
+                        {%if forloop.counter|divisibleby:2 %}
+                            <tr id="file_{{file.id}}" style="background-color:#f9f9f9;" onMouseOver="this.style.backgroundColor='#BFDCF3';" onmouseout="this.style.backgroundColor='#f9f9f9';">
+                        {%else%}
+                            <tr id="file_{{file.id}}">
+                        {%endif%}
+
+                        <td style="display:none">{{file.id}}</td>
+                        <td><a href="/downloads/4/{{file.id}}/">{{file}}</a></td>
+                        <td>{{file.file_desc}}</td>
+                        <td>{{file.file_size|filesizeformat}}</td>
+                        <td>{{file.create_time|date:"Y-m-d H:i:s"}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+             <ul class="pager" style="float: right; margin-right:10%;">
+
+                <li><a href="/als/custom/mappinged_files/?fileid={{fileid}}">首页</a></li>
+                {% if page.has_previous %}
+                    <li><a href="/als/custom/mappinged_files/?fileid={{fileid}}&page={{ page.previous_page_number }}">前一页</a></li>
+                {% else %}
+                    <li><a href="#">前一页</a></li>
+                {% endif %}
+                <li><a href="#">第{{page.number}}/{{page.paginator.num_pages}}页   共{{ page.paginator.num_pages}}页</a></li>
+                {% if page.has_next %}
+                <li><a href="/als/custom/mappinged_files/?fileid={{fileid}}&page={{ page.next_page_number }}">后一页</a></li>
+                {% else %}
+                    <li><a href="#">后一页</a></li>
+                {% endif %}
+                <li><a href="/als/custom/mappinged_files/?fileid={{fileid}}&page={{ page.paginator.num_pages }}">末页</a></li>
+
+                <li><input style="width:50px;margin-bottom:0px;" type="text" id="pageNum" name="pageNum"></li>
+                <li onclick="window.location.href='/als/custom/mappinged_files/?fileid={{fileid}}&page='+document.getElementById('pageNum').value;"><a href="#">确定</a></li>
+                <li><a href="#">第{{page.number}}/{{page.paginator.num_pages}}页   共{{ page.paginator.num_pages}}页</a></li>
+            </ul>
+<!-- </div>
+</div> -->
+<div class="footer">
+		Copyright © 2015百融（北京）金融信息服务股份有限公司.All Right Reserved.
+</div>
+
+{% endblock %}

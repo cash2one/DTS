@@ -1,0 +1,54 @@
+{% extends 'include/base.html' %}
+
+{% block content %}
+
+<style type="text/css">
+
+.footer{
+	font-size: 18px;
+	text-align: center;
+	width: 100%;
+	position: absolute;
+    bottom: 20px;
+}
+</style>
+
+
+
+<table class="table table-striped" style="width:80%; margin-left:10%;">
+<thead><tr><th>客户名称</th><th>客户邮箱</th><th>客户IP</th></tr></thead>
+<tbody>
+	{% for cus in customs %}
+	<tr>
+	<td>{{ cus.name }}</td>
+	<td>{{ cus.email }}</td>
+	<td>{{ cus.ip }}</td>
+	</tr>
+	{% endfor %}
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+<!-- <div class="container" style="margin: 0 auto;">
+  <div class="row-fluid">
+    <div class="span4 offset2" id="user">
+      <ul class="ul1">
+        {% for cus in customs %}
+          <li class="li1"><img src="/static/img/user.png" id="png"/><span>{{ cus.name }}</span></li>
+
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div> -->
+<div class="footer">
+		Copyright © 2015百融（北京）金融信息服务股份有限公司.All Right Reserved.
+</div>
+{% endblock %}
+  

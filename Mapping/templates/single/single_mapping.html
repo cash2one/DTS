@@ -1,0 +1,129 @@
+{% extends 'include/base.html' %}
+
+{% block content %}
+<style type="text/css">
+textarea{ 
+  width: 400px; 
+  height:80px; 
+}
+
+p {
+color:red;
+}
+#div{
+    width: 85%;
+    background: #FFFFFF;
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 1px 1px 1px 1px #ccc;
+    margin-top: 50px;
+    padding: 10px 25px;
+    font-family: "微软雅黑";
+    font-size: 16px;
+    padding-left: 50px;
+    
+}
+.controls .btn-success{
+    width: 100px;
+    margin-top: 20px;
+    background: #4388cd;
+}
+.input-xlarge{
+    display: block;
+    width: 200px;
+    height: 25px;
+    }
+font{
+    color: #000;
+    font-size: 16px;
+    font-family: '微软雅黑';
+}
+</style>
+<div class="container" id="div">
+<form class="form-horizontal" enctype="multipart/form-data" method="post">
+    {% csrf_token %}
+    <fieldset>
+      <div id="legend" class="">
+        <legend class="">数据匹配</legend>
+      </div>
+
+    <div class="control-group">
+        姓名：<input type = "text" name="name"/>
+        
+    </div>
+<br>
+    <div class="control-group">
+        身份证号：<input type = "text" name="pid"/>
+        
+    </div>
+<br>
+    <div class="control-group">
+        手机号：<input type = "text" name="cell"/>
+        
+    </div>
+<br>
+    <div class="control-group">
+        银行卡号：<input type = "text" name="bank_card1"/>
+        
+    </div>
+<br>
+    <div class="control-group">
+        电子邮箱： <input type = "text" name="email"/>
+        
+    </div>
+<br>
+<br>
+    <div class="control-group">
+        家庭住址： <input type = "text" name="addr"/>
+        
+    </div>
+<br>
+<br>
+    <div class="control-group">
+        流水号： <input type = "text" name="swift"/>
+        
+    </div>
+<br>
+<br>
+    <div class="control-group">
+        事件类型： <input type = "text" name="even"/>
+        
+    </div>
+<br>
+<br>
+    <div class="control-group">
+        申请日期：（格式yyyy-mm-dd） <input type = "text" name="date"/>
+        
+    </div>
+<br>
+<br>
+    <div class="control-group">
+
+          <!-- Textarea -->
+          <label class="control-label">匹配套餐名称:</label>（注：请英文逗号隔开各个套餐名）
+            <div class="textarea">
+                  <textarea type="" class="" name="meal" maxlength="300"> </textarea>
+          </div>
+        </div>
+
+<br>
+<br>
+    <div class="control-group">
+        画像帐号名称： <input type = "text" name="apiname"/>    画像帐号密码： <input type = "text" name="apipasswd"/>     apicode： <input type = "text" name="apicode"/>
+        
+    </div>
+
+    <div class="control-group">
+
+        <span><font color="red">{{ err|safe }}</font></span>
+          <!-- Button -->
+          <div class="controls">
+            <button type="submit" class="btn btn-success">提交</button>
+          </div>
+        </div>
+
+    </fieldset>
+  </form>
+
+</div>
+{% endblock %}

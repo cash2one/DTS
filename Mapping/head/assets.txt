@@ -1,0 +1,4 @@
+Assets_house:assets_house
+Assets_car:assets_car
+Assets_fin:assets_fin
+Assets_wealth:assets_wealth

@@ -1,0 +1,105 @@
+{% extends 'include/base.html' %}
+{% load show_utils %}
+
+{% block content %}
+<style type="text/css">
+.table{
+    width: 87%; 
+    margin: 0 auto;
+    margin-top: 40px;
+}
+.pager{
+    margin-right: 7%;
+}
+.table td a{
+    color:black;    
+}
+.footer{
+    font-size: 18px;
+    text-align: center;
+    width: 100%;
+    margin-top: 200px;
+}
+</style>
+<div class="container" style="background: #FFFFFF;width: 85%;border-radius: 10px;margin-top: 30px;min-height: 550px;">
+        <div class="container-fluid">
+
+            <table class="table table-hover">
+                <thead><tr><th>授权码</th><th>是否分发到用户</th><th>状态</th><th>创建时间</th><th>套餐权限</th><th>操作</th></tr></thead>
+                <tbody>
+                    {% for coder in page %}
+                        {%if forloop.counter|divisibleby:2 %}
+                            <tr id="code_{{coder.id}}" style="background-color:#f9f9f9;" onMouseOver="this.style.backgroundColor='#BFDCF3';" onmouseout="this.style.backgroundColor='#f9f9f9';">
+                        {%else%}
+                            <tr id="code_{{coder.id}}">
+                        {%endif%}
+
+                        <td style="display:none"></td>
+                        <td style="width: 300px">{{coder.code}}</td>
+                        {% if coder.to_user %}
+                        <td style="width: 180px">是</td>
+                        {%else%}
+                        <td style="width: 240px">否</td>
+                        {%endif%}
+                        {% if coder.is_outdate %}
+                            <td style="width: 160px">已过期</td>
+                        {% else %}
+                            <td style="width: 160px">可以使用</td>
+                        {% endif %}
+                        <td style="width: 200px">{{coder.create_time|date:"SHORT_DATE_FORMAT"}}</td>
+                        {% if coder.permission == 'loss_data'%}
+                        <td style="width: 200px">信息补充套餐</td>
+                        {%endif%}
+                        {% if coder.permission == 'loss_mark'%}
+                        <td style="width: 200px">营销失联套餐</td>
+                        {%endif%}
+                        {% if coder.permission == 'loss_collect'%}
+                        <td style="width: 200px">催收失联套餐</td>
+                        {%endif%}
+                        <td>
+                            {% if coder.to_user %}
+                            <button class="btn btn-primary" style="width:80px;margin-left: 20px;" onclick="delete_this({{coder.id}})" >删除</button>
+                            {% else %}
+                            <button class="btn btn-success" style="width:80px;" onclick="to_user({{coder.id}})">已发送</button>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <ul class="pager" style="float: right">
+
+                {% if page.has_previous %}
+                    <li><a href="/als/coder/code_list/">首页</a></li>
+                    <li><a href="/als/coder/code_list/?page={{ page.previous_page_number }}">前一页</a></li>
+                {% else %}
+                    <li><a href="#">首页</a></li>
+                    <li><a href="#">前一页</a></li>
+                {% endif %}
+
+                {% if page.has_next %}
+                    <li><a href="/als/coder/code_list/?page={{ page.next_page_number }}">后一页</a></li>
+                    <li><a href="/als/coder/code_list/?page={{ page.paginator.num_pages }}">末页</a></li>
+                {% else %}
+                    <li><a href="#">后一页</a></li>
+                    <li><a href="#">末页</a></li>
+                {% endif %}
+                    <li><input style="width:50px;margin-bottom:0px;" type="text" id="pageNum" name="pageNum"></li>
+                    <li onclick="window.location.href='/als/manage/source_file/?page='+document.getElementById('pageNum').value;"><a href="#">确定</a></li>
+                    <li><a href="#">第{{page.number}}/{{page.paginator.num_pages}}页   共{{ page.paginator.num_pages}}页</a></li>
+            </ul>
+</div>
+</div>
+<div class="footer">
+        Copyright © 2015百融（北京）金融信息服务股份有限公司.All Right Reserved.
+</div>
+
+</div>
+
+
+{% endblock %}
+
+{% block js %}
+<script src="/static/js/file-operate.js"></script>
+{% endblock %}
