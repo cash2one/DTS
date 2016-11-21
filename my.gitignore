@@ -1,0 +1,4 @@
+*.pyc
+.svn/
+*.db
+migrtions/
